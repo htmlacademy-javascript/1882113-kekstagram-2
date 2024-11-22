@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Николай Елисанов](https://up.htmlacademy.ru/javascript-individual/2/user/1882113).
-* Наставник: `Неизвестно`.
+* Наставник: [Василий Петрухин](https://htmlacademy.ru/profile/id1528403).
 
 ---
 
