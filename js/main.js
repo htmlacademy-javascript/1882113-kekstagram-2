@@ -7,7 +7,7 @@ const DESCRIPTION_PHOTO = [
   'Вышло не плохо на мой взгляд',
 ];
 
-const NUMBER_OF_OBJECTS_GENERATED = 25;
+const NUMBER_OF_OBJECTS_GENERATED = 2;
 
 const COMMENT_MESSAGE = [
   'Всё отлично!',
@@ -46,7 +46,7 @@ const returnUniqueID = (min, max) => {
   return () => {
     let uniqueId = createRandomNumber(min, max);
     if(previousValue.length >= max) {
-      console.error('Перебраны все числа из диапазона');
+      // console.error('Перебраны все числа из диапазона');
       return null;
     }
     while (previousValue.includes(uniqueId)) {
@@ -73,16 +73,20 @@ const createListComments = (min, max) => {
   return commentsList;
 };
 
-// console.log(createListComments(0, 30));
+const createPhotoData = (quantityObject) => {
+  const objectList = [];
+  const iterationNumber = quantityObject;
+  for(let i = 0; i <= iterationNumber - 1; i++) {
+    objectList[i] = {
+      id: createIDPhoto(),
+      url:`photos/${createIDUrl()}.jpg`,
+      description: DESCRIPTION_PHOTO[createRandomNumber(0, 5)],
+      likes: createRandomNumber(15, 200),
+      comments: createListComments(0, 30),
+    };
+  }
+  return objectList;
+};
 
-const createPhotoData = () => ({
-  id: createIDPhoto(),
-  url:`photos/${createIDUrl()}.jpg`,
-  description: DESCRIPTION_PHOTO[createRandomNumber(0, 5)],
-  likes: createRandomNumber(15, 200),
-  comments: createListComments(0, 30),
-});
-
-
-console.log(createPhotoData());
+createPhotoData(NUMBER_OF_OBJECTS_GENERATED);
 
