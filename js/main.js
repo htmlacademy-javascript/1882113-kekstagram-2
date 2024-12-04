@@ -7,7 +7,7 @@ const DESCRIPTION_PHOTO = [
   'Вышло не плохо на мой взгляд',
 ];
 
-const NUMBER_OF_OBJECTS_GENERATED = 2;
+const NUMBER_OF_OBJECTS_GENERATED = 25;
 
 const COMMENT_MESSAGE = [
   'Всё отлично!',
