@@ -1,4 +1,4 @@
-const DESCRIPTION_PHOTO = [
+const DESCRIPTIONS_PHOTO = [
   'Красивый вид',
   'Получилось хорошее фото',
   'Смотрится очень здорово',
@@ -9,7 +9,7 @@ const DESCRIPTION_PHOTO = [
 
 const NUMBER_OF_OBJECTS_GENERATED = 25;
 
-const COMMENT_MESSAGE = [
+const COMMENTS_MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -18,7 +18,7 @@ const COMMENT_MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const AUTHOR_NAME = [
+const AUTHORS_NAMES = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -63,30 +63,27 @@ const createListComments = (min, max) => {
   const commentsList = [];
   const iterationNumber = createRandomNumber(min, max);
   for(let i = 0; i <= iterationNumber; i++) {
-    commentsList[i] = {
+    commentsList.push({
       id: createUniqueID(),
       avatar: `img/avatar-${createRandomNumber(1, 6)}.svg`,
-      message: COMMENT_MESSAGE[createRandomNumber(0, 5)],
-      name: AUTHOR_NAME[createRandomNumber(0, 5)],
-    };
+      message: COMMENTS_MESSAGES[createRandomNumber(0, 5)],
+      name: AUTHORS_NAMES[createRandomNumber(0, 5)],
+    });
   }
   return commentsList;
 };
 
 const createPhotoData = (quantityObject) => {
   const objectList = [];
-  const iterationNumber = quantityObject;
-  for(let i = 0; i <= iterationNumber - 1; i++) {
-    objectList[i] = {
+  for(let i = 0; i <= quantityObject - 1; i++) {
+    objectList.push({
       id: createIDPhoto(),
       url:`photos/${createIDUrl()}.jpg`,
-      description: DESCRIPTION_PHOTO[createRandomNumber(0, 5)],
+      description: DESCRIPTIONS_PHOTO[createRandomNumber(0, 5)],
       likes: createRandomNumber(15, 200),
       comments: createListComments(0, 30),
-    };
+    });
   }
   return objectList;
 };
-
 createPhotoData(NUMBER_OF_OBJECTS_GENERATED);
-
