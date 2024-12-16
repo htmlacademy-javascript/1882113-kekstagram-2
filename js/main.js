@@ -9,6 +9,11 @@ const DESCRIPTIONS_PHOTO = [
 
 const NUMBER_OF_OBJECTS_GENERATED = 25;
 
+const QUANTITY_LIKES = {
+  MIN: 15,
+  MAX: 200,
+};
+
 const COMMENTS_MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -80,7 +85,7 @@ const createPhotoData = (quantityObject) => {
       id: createIDPhoto(),
       url:`photos/${createIDUrl()}.jpg`,
       description: DESCRIPTIONS_PHOTO[createRandomNumber(0, 5)],
-      likes: createRandomNumber(15, 200),
+      likes: createRandomNumber(QUANTITY_LIKES.MIN, QUANTITY_LIKES.MAX),
       comments: createListComments(0, 30),
     });
   }
