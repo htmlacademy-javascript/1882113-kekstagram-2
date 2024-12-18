@@ -43,10 +43,10 @@ const checksDurationMeeting = (startWorks, endWorks, startMeeting, durationMeeti
   const durationMeetingNumber = +`${durationMeetingHour}.${durationMeetingMin}`;
   const endMeeting = startMeetingNumber + durationMeetingNumber;
 
-  if(startWorksNumber <= endMeeting && endtWorksNumber >= endMeeting) {
+  if(startWorksNumber <= startMeetingNumber && endtWorksNumber >= endMeeting) {
     return true;
   }
   return false;
 };
 
-console.log(checksDurationMeeting('08:00', '17:30', '14:00', 90));
+checksDurationMeeting('08:00', '17:30', '14:00', 90);
