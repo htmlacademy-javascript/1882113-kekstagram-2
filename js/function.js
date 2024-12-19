@@ -29,3 +29,18 @@ function getNumberFromString(string) {
 }
 
 getNumberFromString('ECMAScript 2022');
+
+const checksDurationMeeting = (startWorks, endWorks, startMeeting, durationMeeting) => {
+  startWorks = startWorks.split(':');
+  endWorks = endWorks.split(':');
+  startMeeting = startMeeting.split(':');
+
+
+  const startWorksMin = +(startWorks[0] * 60) + + startWorks[1];
+  const endWorksMin = +(endWorks[0] * 60) + + endWorks[1];
+  const startMeetingMin = +(startMeeting[0] * 60) + + startMeeting[1];
+  const endMeetingMin = startMeetingMin + durationMeeting;
+  return startWorksMin <= startMeetingMin && endWorksMin >= endMeetingMin;
+};
+
+checksDurationMeeting('8:0', '10:0', '8:0', 120);
