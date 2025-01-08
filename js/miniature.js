@@ -7,9 +7,11 @@ const thumbnailsData = createPhotoData(NUMBER_OF_OBJECTS_GENERATED);
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
 
-const createThumbnails = ({description, likes, url, comments}) => {
+const createThumbnails = ({description, id, likes, url, comments}) => {
   const templateItem = template.cloneNode(true);
   const thumbnail = templateItem.querySelector('.picture__img');
+  const thumbnailLink = templateItem.querySelector('.picture');
+  thumbnailLink.dataset.imageId = id;
   thumbnail.src = url;
   thumbnail.alt = description;
   templateItem.querySelector('.picture__likes').textContent = likes;
@@ -22,3 +24,5 @@ thumbnailsData.forEach((thumbnailData) => {
 });
 
 pictures.appendChild(fragment);
+
+export {thumbnailsData};
