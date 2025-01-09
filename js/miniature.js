@@ -1,11 +1,7 @@
-import {
-  createPhotoData,
-  NUMBER_OF_OBJECTS_GENERATED,
-} from './create-foto-data.js';
 const template = document.querySelector('#picture').content;
-const thumbnailsData = createPhotoData(NUMBER_OF_OBJECTS_GENERATED);
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
+
 
 const createThumbnails = ({description, id, likes, url, comments}) => {
   const templateItem = template.cloneNode(true);
@@ -19,10 +15,12 @@ const createThumbnails = ({description, id, likes, url, comments}) => {
   return templateItem;
 };
 
-thumbnailsData.forEach((thumbnailData) => {
-  fragment.appendChild(createThumbnails(thumbnailData));
-});
 
-pictures.appendChild(fragment);
+const renderThumbnails = (datasets) => {
+  datasets.forEach((dataset) => {
+    fragment.appendChild(createThumbnails(dataset));
+  });
+  pictures.appendChild(fragment);
+};
 
-export {thumbnailsData};
+export {renderThumbnails};

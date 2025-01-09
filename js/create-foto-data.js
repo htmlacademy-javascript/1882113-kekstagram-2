@@ -28,7 +28,7 @@ const createListComments = (min, max) => {
   return commentsList;
 };
 
-const createPhotoData = (quantityObject) => {
+const createPhotoData = (quantityObject = NUMBER_OF_OBJECTS_GENERATED) => {
   const objectList = [];
   for(let i = 0; i <= quantityObject - 1; i++) {
     objectList.push({

@@ -1,4 +1,4 @@
-import {thumbnailsData} from './miniature.js';
+// import {thumbnailsData} from './miniature.js';
 const picture = document.querySelector('.pictures');
 const modalPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
