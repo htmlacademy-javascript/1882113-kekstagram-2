@@ -1,17 +1,28 @@
-const renderComment = ({avatar, message, name}) => {
-  const listItem = document.createElement('li');
-  listItem.classList.add('social__comment');
-  const commentImage = document.createElement('img');
-  const commentText = document.createElement('p');
-  commentImage.classList.add('social__picture');
-  commentImage.src = avatar;
-  commentImage.alt = name;
-  commentText.classList.add('social__text');
-  commentText.textContent = message;
-  listItem.appendChild(commentImage);
-  listItem.appendChild(commentText);
-  listItem.classList.add('hidden');
+const commentTemplate = document.querySelector('#comment').content;
+const commentsShow = document.querySelector('.social__comments');
 
-  return listItem;
+
+export const showComment = (itemNumberShow) => {
+  for(let i = 0; i <= itemNumberShow - 1; i++) {
+    if(commentsShow.children[i]) {
+      commentsShow.children[i].classList.remove('hidden');
+    } else {
+      break;
+    }
+  }
+};
+
+
+const renderComment = ({avatar, message, name}) => {
+  const commentItem = commentTemplate.cloneNode(true);
+  const commentListItem = commentItem.querySelector('.social__comment');
+  const imageComment = commentItem.querySelector('.social__picture');
+  const commentText = commentItem.querySelector('.social__text');
+  imageComment.src = avatar;
+  imageComment.alt = name;
+  commentText.textContent = message;
+  commentListItem.classList.add('hidden');
+
+  return commentItem;
 };
 export {renderComment};

@@ -1,4 +1,7 @@
-import { renderComment } from './comments.js';
+import {
+  renderComment,
+  showComment,
+} from './comments.js';
 
 const picture = document.querySelector('.pictures');
 const modalPicture = document.querySelector('.big-picture');
@@ -16,9 +19,8 @@ const fragment = document.createDocumentFragment();
 function buttonCloseHendler() {
   modalPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  for(let i = commentsShow.children.length - 1; i >= 0; i--) {
-    commentsShow.children[i].remove();
-  }
+  showMoreComment.classList.remove('hidden');
+  commentsShow.innerHTML = '';
   itemNumberShow = 5;
   showMoreComment.removeEventListener('click', buttonShowMoreHendler);
   closeButtonModal.removeEventListener('click', buttonCloseHendler);
@@ -31,35 +33,30 @@ function buttonCloseHendlerKey(evt) {
   }
 }
 
+const hiddenButtonComment = (showComments, totalComments) => {
+  if(showComments === totalComments) {
+    showMoreComment.classList.add('hidden');
+  }
+};
+
 function buttonShowMoreHendler(evt) {
   evt.preventDefault();
   itemNumberShow += 5;
-
-  for(let i = 0; i <= itemNumberShow - 1; i++) {
-    if(commentsShow.children[i]) {
-      commentsShow.children[i].classList.remove('hidden');
-    } else {
-      break;
-    }
-  }
+  showComment(itemNumberShow);
   numberShowComment.textContent = commentsShow.querySelectorAll('li:not(.hidden)').length;
+  hiddenButtonComment(numberShowComment.textContent, totalNumberComment.textContent);
 }
 
 
 const userOpenMdal = () => {
   modalPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  for(let i = 0; i <= itemNumberShow - 1; i++) {
-    if(commentsShow.children[i]) {
-      commentsShow.children[i].classList.remove('hidden');
-    } else {
-      break;
-    }
-  }
+  showComment(itemNumberShow);
   numberShowComment.textContent = commentsShow.querySelectorAll('li:not(.hidden)').length;
   showMoreComment.addEventListener('click', buttonShowMoreHendler);
   closeButtonModal.addEventListener('click', buttonCloseHendler);
   document.addEventListener('keydown', buttonCloseHendlerKey);
+  hiddenButtonComment(numberShowComment.textContent, totalNumberComment.textContent);
 };
 
 
