@@ -1,0 +1,72 @@
+// import {thumbnailsData} from './miniature.js';
+const picture = document.querySelector('.pictures');
+const modalPicture = document.querySelector('.big-picture');
+const body = document.querySelector('body');
+const bigPicture = modalPicture.querySelector('.big-picture__img img');
+const bigPictureCaption = modalPicture.querySelector('.social__caption');
+const modalLikes = modalPicture.querySelector('.likes-count');
+const commentsShow = modalPicture.querySelector('.social__comments');
+const numberCommentShow = modalPicture.querySelector('.social__comment-shown-count');
+const totalCommentNumber = modalPicture.querySelector('.social__comment-total-count');
+const commentCount = modalPicture.querySelector('.social__comment-count');
+const commentLoader = modalPicture.querySelector('.comments-loader');
+const closeButtonModal = modalPicture.querySelector('.big-picture__cancel');
+
+const fragment = document.createDocumentFragment();
+
+const createComment = ({avatar, message, name}) => {
+  const listItem = document.createElement('li');
+  listItem.classList.add('social__comment');
+  const commentImage = document.createElement('img');
+  const commentText = document.createElement('p');
+  commentImage.classList.add('social__picture');
+  commentImage.src = avatar;
+  commentImage.alt = name;
+  commentText.classList.add('social__text');
+  commentText.textContent = message;
+  listItem.appendChild(commentImage);
+  listItem.appendChild(commentText);
+
+  return listItem;
+};
+
+const userCloseModalKlick = () => {
+  modalPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  closeButtonModal.removeEventListener('click', userCloseModalKlick);
+  document.removeEventListener('keydown', userCloseModalKey);
+};
+
+const userCloseModalKey = (evt) => {
+  if(evt.key === 'Escape') {
+    userCloseModalKlick();
+  }
+};
+
+
+const userOpenMdal = () => {
+  modalPicture.classList.remove('hidden');
+  body.classList.add('modal-open');
+  closeButtonModal.addEventListener('click', userCloseModalKlick);
+  document.addEventListener('keydown', userCloseModalKey);
+};
+
+
+picture.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  const currentThumbail = evt.target.closest('a.picture');
+  if(currentThumbail) {
+    const curentObj = thumbnailsData.find((element) => element.id === Number(currentThumbail.dataset.imageId));
+    bigPicture.src = curentObj.url;
+    modalLikes.textContent = curentObj.likes;
+    numberCommentShow.textContent = commentsShow.children.length;
+    totalCommentNumber.textContent = curentObj.comments.length;
+    bigPictureCaption.textContent = curentObj.description;
+    commentCount.classList.add('hidden');
+    commentLoader.classList.add('hidden');
+
+    userOpenMdal();
+  }
+});
+
+

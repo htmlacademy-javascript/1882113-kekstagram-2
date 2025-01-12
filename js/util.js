@@ -24,6 +24,8 @@ const returnUniqueID = (min, max) => {
     return uniqueId;
   };
 };
-export {createIDGenerator};
-export {createRandomNumber};
-export {returnUniqueID};
+export {
+  createIDGenerator,
+  createRandomNumber,
+  returnUniqueID
+};
