@@ -1,6 +1,5 @@
 import {
-  renderComment,
-  showComment,
+  renderRangeShowComments,
 } from './comments.js';
 
 const picture = document.querySelector('.pictures');
@@ -13,15 +12,14 @@ const numberShowComment = modalPicture.querySelector('.social__comment-shown-cou
 const totalNumberComment = modalPicture.querySelector('.social__comment-total-count');
 const showMoreComment = modalPicture.querySelector('.social__comments-loader');
 const closeButtonModal = modalPicture.querySelector('.big-picture__cancel');
-let itemNumberShow = 5;
-const fragment = document.createDocumentFragment();
+
+let renderShowComents;
 
 function buttonCloseHendler() {
   modalPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  showMoreComment.classList.remove('hidden');
   commentsShow.innerHTML = '';
-  itemNumberShow = 5;
+  showMoreComment.classList.remove('hidden');
   showMoreComment.removeEventListener('click', buttonShowMoreHendler);
   closeButtonModal.removeEventListener('click', buttonCloseHendler);
   document.removeEventListener('keydown', buttonCloseHendlerKey);
@@ -41,9 +39,8 @@ const hiddenButtonComment = (showComments, totalComments) => {
 
 function buttonShowMoreHendler(evt) {
   evt.preventDefault();
-  itemNumberShow += 5;
-  showComment(itemNumberShow);
-  numberShowComment.textContent = commentsShow.querySelectorAll('li:not(.hidden)').length;
+  renderShowComents(commentsShow);
+  numberShowComment.textContent = commentsShow.querySelectorAll('li').length;
   hiddenButtonComment(numberShowComment.textContent, totalNumberComment.textContent);
 }
 
@@ -51,8 +48,6 @@ function buttonShowMoreHendler(evt) {
 const userOpenMdal = () => {
   modalPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  showComment(itemNumberShow);
-  numberShowComment.textContent = commentsShow.querySelectorAll('li:not(.hidden)').length;
   showMoreComment.addEventListener('click', buttonShowMoreHendler);
   closeButtonModal.addEventListener('click', buttonCloseHendler);
   document.addEventListener('keydown', buttonCloseHendlerKey);
@@ -67,10 +62,10 @@ const renderFullModalImage = (datasets, currentThumbail) => {
   modalLikes.textContent = curentObject.likes;
   totalNumberComment.textContent = curentObject.comments.length;
   bigPictureCaption.textContent = curentObject.description;
-  curentObject.comments.forEach((comment) => {
-    fragment.appendChild(renderComment(comment));
-  });
-  commentsShow.appendChild(fragment);
+
+  renderShowComents = renderRangeShowComments(curentObject.comments);
+  renderShowComents(commentsShow);
+  numberShowComment.textContent = commentsShow.querySelectorAll('li').length;
 };
 
 const thumbnailClickHendler = (datasets) => {
