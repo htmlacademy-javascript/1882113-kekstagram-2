@@ -2,10 +2,9 @@ const commentTemplate = document.querySelector('#comment').content;
 const modalPicture = document.querySelector('.big-picture');
 const commentsShow = modalPicture.querySelector('.social__comments');
 const loaderMoreComments = modalPicture.querySelector('.social__comments-loader');
-const modalLikes = modalPicture.querySelector('.likes-count');
 const totalNumberComment = modalPicture.querySelector('.social__comment-total-count');
-const bigPictureCaption = modalPicture.querySelector('.social__caption');
 const numberShowComment = modalPicture.querySelector('.social__comment-shown-count');
+let renderShowComents;
 
 const createComment = ({avatar, message, name}) => {
   const commentItem = commentTemplate.cloneNode(true);
@@ -38,15 +37,16 @@ const cleansСomments = (hendler) => {
   commentsShow.innerHTML = '';
 };
 
-const initComment = (datasets) => {
+const initComment = () => {
   let startNumberComments = 0;
   const stepNumberComments = 5;
-  modalLikes.textContent = datasets.likes;
-  totalNumberComment.textContent = datasets.comments.length;
-  bigPictureCaption.textContent = datasets.description;
-
-  return () => {
-    const steckComment = datasets.comments.slice(startNumberComments, startNumberComments + stepNumberComments);
+  let arreyComments;
+  return (datasets) => {
+    if(!arreyComments) {
+      arreyComments = datasets;
+    }
+    totalNumberComment.textContent = arreyComments.length;
+    const steckComment = arreyComments.slice(startNumberComments, startNumberComments + stepNumberComments);
     commentsShow.appendChild(renderComments(steckComment));
     numberShowComment.textContent = commentsShow.querySelectorAll('li').length;
     startNumberComments += 5;
@@ -55,10 +55,16 @@ const initComment = (datasets) => {
     }
   };
 };
+const createListComment = (datasets) => {
+  renderShowComents = initComment();
+  renderShowComents(datasets);
+};
 
 
 export {
   initComment,
   addedCommentsShowHandler,
   cleansСomments,
+  renderShowComents,
+  createListComment,
 };

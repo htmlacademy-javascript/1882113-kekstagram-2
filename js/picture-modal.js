@@ -1,15 +1,16 @@
 import {
-  initComment,
   addedCommentsShowHandler,
   cleansСomments,
+  renderShowComents,
+  createListComment,
 } from './comments.js';
 
 const picture = document.querySelector('.pictures');
 const modalPicture = document.querySelector('.big-picture');
 const bigPicture = modalPicture.querySelector('.big-picture__img img');
 const closeButtonModal = modalPicture.querySelector('.big-picture__cancel');
-
-let renderShowComents;
+const modalLikes = modalPicture.querySelector('.likes-count');
+const bigPictureCaption = modalPicture.querySelector('.social__caption');
 
 function buttonCloseHendler() {
   modalPicture.classList.add('hidden');
@@ -38,9 +39,10 @@ const renderFullModalImage = (datasets, currentThumbail) => {
   const curentObject = datasets.find((dataset) => dataset.id === Number(currentThumbail.id));
 
   bigPicture.src = curentObject.url;
+  modalLikes.textContent = curentObject.likes;
+  bigPictureCaption.textContent = curentObject.description;
 
-  renderShowComents = initComment(curentObject);
-  renderShowComents();
+  createListComment(curentObject.comments);
 };
 
 const thumbnailClickHendler = (datasets) => {
