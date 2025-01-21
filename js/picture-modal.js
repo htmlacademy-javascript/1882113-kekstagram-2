@@ -47,9 +47,9 @@ const renderFullModalImage = (datasets, currentThumbail) => {
 
 const thumbnailClickHendler = (datasets) => {
   picture.addEventListener('click', (evt) => {
-    evt.preventDefault();
     const currentThumbail = evt.target.closest('a.picture');
     if(currentThumbail) {
+      evt.preventDefault();
       renderFullModalImage(datasets, currentThumbail);
       userOpenMdal();
     }
