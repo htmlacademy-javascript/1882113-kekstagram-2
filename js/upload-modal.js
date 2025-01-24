@@ -1,4 +1,4 @@
-import {resizeHendler} from './slider.js';
+import {resizeHendler} from './resize-img.js';
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
