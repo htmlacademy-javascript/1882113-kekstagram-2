@@ -1,8 +1,10 @@
+import {resizeHendler} from './slider.js';
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
 const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
+const scale = uploadOverlay.querySelector('.scale');
 //
 // uploadOverlay.classList.remove('hidden');
 //
@@ -16,6 +18,7 @@ const buttonCloseHendler = () => {
   inputHashtags.removeEventListener('keydown', removeCloseKeydown);
   inputDescription.removeEventListener('keydown', removeCloseKeydown);
   document.removeEventListener('keydown', keyCloseHendler);
+  scale.removeEventListener('click', resizeHendler);
   buttonClose.removeEventListener('click', buttonCloseHendler);
 };
 
@@ -37,4 +40,5 @@ uploadFile.addEventListener('change', () => {
   document.addEventListener('keydown', keyCloseHendler);
   inputHashtags.addEventListener('keydown', removeCloseKeydown);
   inputDescription.addEventListener('keydown', removeCloseKeydown);
+  scale.addEventListener('click', resizeHendler);
 });
