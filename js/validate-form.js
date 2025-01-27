@@ -1,8 +1,14 @@
+const VALIDATE_MESSAGE = {
+  'invalid hashtag': 'введён невалидный хэштег',
+  'repeat hashtags': 'хэштеги повторяются',
+  'exceeded quantity hashtags': 'превышено количество хэштегов',
+  'comment max length': 'длина комментария больше 140 символов',
+};
 const uploadForm = document.querySelector('.img-upload__form');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
 const inputDescription = uploadForm.querySelector('.text__description');
 const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
-let string;
+let errorString;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -11,7 +17,7 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 }, true);
 
-const errorText = () => `${string}`;
+const errorText = () => `${errorString}`;
 
 const validateHashtags = (value)=> {
   const validateArray = value.split(' ');
@@ -19,25 +25,21 @@ const validateHashtags = (value)=> {
     for(let i = 0; i < validateArray.length; i++) {
       for(let j = i + 1; j < validateArray.length; j++) {
         if(validateArray[j] === validateArray[i]) {
-          string = 'хэштеги повторяются';
-          console.log('не верно');
+          errorString = VALIDATE_MESSAGE['repeat hashtags'];
           return false;
         }
       }
       if(validateArray[i] !== '') {
         const isValid = patternHashtags.test(validateArray[i]);
         if(!isValid) {
-          console.log('не верно');
-          string = 'введён невалидный хэштег';
+          errorString = VALIDATE_MESSAGE['invalid hashtag'];
           return false;
         }
       }
     }
-    console.log('валидно');
     return true;
   }
-  console.log('не верно');
-  string = 'превышено количество хэштегов';
+  errorString = VALIDATE_MESSAGE['exceeded quantity hashtags'];
   return false;
 
 
@@ -45,7 +47,7 @@ const validateHashtags = (value)=> {
 
 const validateSringLength = (value) => {
   if(value.length > 140) {
-    string = 'длина комментария больше 140 символов';
+    errorString = VALIDATE_MESSAGE['comment max length'];
     return false;
   }
   return true;
@@ -57,11 +59,11 @@ pristine.addValidator(inputDescription, validateSringLength, errorText);
 
 
 uploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    console.log('1');
+    console.log('Форма отправлена');
   } else {
-    evt.preventDefault();
-    console.log('2');
+    console.log('Форма не отправлена');
   }
 });
