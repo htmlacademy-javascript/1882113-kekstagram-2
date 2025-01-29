@@ -8,7 +8,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
 const inputDescription = uploadForm.querySelector('.text__description');
 const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
-let errorString;
+let errorKey;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -17,29 +17,29 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 }, true);
 
-const errorText = () => `${errorString}`;
+const errorText = () => VALIDATE_MESSAGE[errorKey];
 
 const validateHashtags = (value)=> {
-  const validateArray = value.split(' ');
+  const validateArray = value.trim().split(' ');
   if(validateArray.length <= 5) {
     for(let i = 0; i < validateArray.length; i++) {
       for(let j = i + 1; j < validateArray.length; j++) {
         if(validateArray[j] === validateArray[i]) {
-          errorString = VALIDATE_MESSAGE['repeat hashtags'];
+          errorKey = 'repeat hashtags';
           return false;
         }
       }
       if(validateArray[i] !== '') {
         const isValid = patternHashtags.test(validateArray[i]);
         if(!isValid) {
-          errorString = VALIDATE_MESSAGE['invalid hashtag'];
+          errorKey = 'invalid hashtag';
           return false;
         }
       }
     }
     return true;
   }
-  errorString = VALIDATE_MESSAGE['exceeded quantity hashtags'];
+  errorKey = 'exceeded quantity hashtags';
   return false;
 
 
@@ -47,7 +47,7 @@ const validateHashtags = (value)=> {
 
 const validateSringLength = (value) => {
   if(value.length > 140) {
-    errorString = VALIDATE_MESSAGE['comment max length'];
+    errorKey = 'comment max length';
     return false;
   }
   return true;

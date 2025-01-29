@@ -6,7 +6,7 @@ const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
 const scale = uploadOverlay.querySelector('.scale');
 //
-// uploadOverlay.classList.remove('hidden');
+uploadOverlay.classList.remove('hidden');
 //
 
 const buttonCloseHendler = () => {
