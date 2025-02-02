@@ -1,12 +1,14 @@
 import {resizeHendler} from './resize-img.js';
+import {checkEffect} from './slider.js';
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
 const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
+const effectList = document.querySelector('.effects__list');
 const scale = uploadOverlay.querySelector('.scale');
 //
-uploadOverlay.classList.remove('hidden');
+// uploadOverlay.classList.remove('hidden');
 //
 
 const buttonCloseHendler = () => {
@@ -19,6 +21,7 @@ const buttonCloseHendler = () => {
   inputDescription.removeEventListener('keydown', removeCloseKeydown);
   document.removeEventListener('keydown', keyCloseHendler);
   scale.removeEventListener('click', resizeHendler);
+  effectList.removeEventListener('change', checkEffect);
   buttonClose.removeEventListener('click', buttonCloseHendler);
 };
 
@@ -41,4 +44,5 @@ uploadFile.addEventListener('change', () => {
   inputHashtags.addEventListener('keydown', removeCloseKeydown);
   inputDescription.addEventListener('keydown', removeCloseKeydown);
   scale.addEventListener('click', resizeHendler);
+  effectList.addEventListener('change', checkEffect);
 });

@@ -1,21 +1,59 @@
-const EFFECT = {
-  chrome: 'grayscale',
-  sepia: 'sepia',
-  marvin: 'invert',
-  phobos: 'blur',
-  heat: 'brightness',
+const SLIDER__SETTING = {
+  chrome: {
+    effect: 'grayscale',
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 0,
+    step: 0.1,
+  },
+  sepia: {
+    effect: 'sepia',
+    range: {
+      min: 0,
+      max: 1,
+    },
+    start: 0,
+    step: 0.1,
+  },
+  marvin:{
+    effect: 'invert',
+    range: {
+      min: 0,
+      max: 100,
+    },
+    start: 0,
+    step: 1,
+    percent: '%',
+  },
+  phobos: {
+    effect: 'blur',
+    range: {
+      min: 0,
+      max: 3,
+    },
+    start: 0,
+    step: 0.1,
+    pixel: 'px',
+  },
+  heat: {
+    effect: 'brightness',
+    range: {
+      min: 1,
+      max: 3,
+    },
+    start: 1,
+    step: 0.1,
+  },
 };
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
-const effectList = document.querySelector('.effects__list');
 const uploadPreview = document.querySelector('.img-upload__preview');
-const effectLevel = document.querySelector('.effect-level');
-
+const effectLevel = document.querySelector('.img-upload__effect-level');
 effectLevel.classList.add('hidden');
 
-let stringEffect;
-let percent = false;
-let pixel = false;
+let currentSetting;
 
 
 noUiSlider.create(effectSlider, {
@@ -28,94 +66,24 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 
-const changesIntensity = (string, value,) => {
-  if(percent) {
-    return `${string }(${value}%)`;
-  } else if (pixel) {
-    return `${string }(${value}px)`;
-  }
-  return `${string }(${value})`;
-};
+const changesIntensity = (effect, value, percent = '', pixel = '') =>
+  `${effect}(${value}${percent}${pixel})`;
 
 
-effectSlider.noUiSlider.on('update', () => {
+effectSlider.noUiSlider.on('slide', () => {
   effectValue.value = effectSlider.noUiSlider.get();
-  uploadPreview.style.filter = changesIntensity(stringEffect, effectValue.value);
+  uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.percent, currentSetting.pixel);
 });
 
-const checkEffect = (evt) => {
+function checkEffect(evt) {
+  uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
-    uploadPreview.removeAttribute('style');
   } else {
+    effectSlider.noUiSlider.updateOptions(SLIDER__SETTING[evt.target.value]);
+    currentSetting = SLIDER__SETTING[evt.target.value];
     effectLevel.classList.remove('hidden');
   }
-  if (evt.target.value === 'chrome') {
-    uploadPreview.removeAttribute('style');
-    stringEffect = EFFECT.chrome;
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 0,
-      step: 0.1,
-    });
-    percent = false;
-    pixel = false;
-  } else if (evt.target.value === 'sepia') {
-    uploadPreview.removeAttribute('style');
-    stringEffect = EFFECT.sepia;
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 0,
-      step: 0.1,
-    });
-    percent = false;
-    pixel = false;
-  } else if(evt.target.value === 'marvin') {
-    uploadPreview.removeAttribute('style');
-    stringEffect = EFFECT.marvin;
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100,
-      },
-      start: 0,
-      step: 1,
-    });
-    percent = true;
-    pixel = false;
-  } else if (evt.target.value === 'phobos') {
-    uploadPreview.removeAttribute('style');
-    stringEffect = EFFECT.phobos;
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3,
-      },
-      start: 0,
-      step: 0.1,
-    });
-    percent = false;
-    pixel = true;
-  } else if(evt.target.value === 'heat') {
-    uploadPreview.removeAttribute('style');
-    stringEffect = EFFECT.heat;
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3,
-      },
-      start: 1,
-      step: 0.1,
-    });
-    percent = false;
-    pixel = false;
-  }
-};
+}
 
-effectList.addEventListener('change', checkEffect);
+export {checkEffect,};
