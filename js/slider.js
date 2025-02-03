@@ -25,7 +25,7 @@ const SLIDER__SETTING = {
     },
     start: 0,
     step: 1,
-    percent: '%',
+    unit: '%',
   },
   phobos: {
     effect: 'blur',
@@ -35,7 +35,7 @@ const SLIDER__SETTING = {
     },
     start: 0,
     step: 0.1,
-    pixel: 'px',
+    unit: 'px',
   },
   heat: {
     effect: 'brightness',
@@ -66,8 +66,8 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 
-const changesIntensity = (effect, value, percent = '', pixel = '') =>
-  `${effect}(${value}${percent}${pixel})`;
+const changesIntensity = (effect, value, unit = '') =>
+  `${effect}(${value}${unit})`;
 
 
 effectSlider.noUiSlider.on('slide', () => {
