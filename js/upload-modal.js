@@ -1,5 +1,6 @@
 import {resizeHendler} from './resize-img.js';
 import {checkEffect} from './slider.js';
+const form = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
@@ -14,9 +15,10 @@ const scale = uploadOverlay.querySelector('.scale');
 const buttonCloseHendler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  uploadFile.value = '';
-  inputHashtags.value = '';
-  inputDescription.value = '';
+  uploadFile.reset();
+  // uploadFile.value = '';
+  // inputHashtags.value = '';
+  // inputDescription.value = '';
   inputHashtags.removeEventListener('keydown', removeCloseKeydown);
   inputDescription.removeEventListener('keydown', removeCloseKeydown);
   document.removeEventListener('keydown', keyCloseHendler);
