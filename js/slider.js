@@ -72,7 +72,7 @@ const changesIntensity = (effect, value, unit = '') =>
 
 effectSlider.noUiSlider.on('slide', () => {
   effectValue.value = effectSlider.noUiSlider.get();
-  uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.percent, currentSetting.pixel);
+  uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
 });
 
 function checkEffect(evt) {
