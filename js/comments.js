@@ -25,17 +25,12 @@ const renderComments = (datasets) => {
   return fragment;
 };
 
-const addedCommentsShowHandler = (hendler) => {
-  if(totalNumberComment.textContent > 5) {
-    loaderMoreComments.addEventListener('click', hendler);
-  }
-};
-
-const cleansСomments = (hendler) => {
-  loaderMoreComments.removeEventListener('click', hendler);
+const cleansСomments = () => {
+  loaderMoreComments.removeEventListener('click', renderShowComents);
   loaderMoreComments.classList.remove('hidden');
   commentsShow.innerHTML = '';
 };
+
 
 const initComment = () => {
   let startNumberComments = 0;
@@ -50,21 +45,22 @@ const initComment = () => {
     commentsShow.appendChild(renderComments(steckComment));
     numberShowComment.textContent = commentsShow.querySelectorAll('li').length;
     startNumberComments += 5;
-    if(numberShowComment.textContent === totalNumberComment.textContent) {
+    if(commentsShow.querySelectorAll('li').length === arreyComments.length) {
       loaderMoreComments.classList.add('hidden');
     }
   };
 };
+
+
 const createListComment = (datasets) => {
   renderShowComents = initComment();
   renderShowComents(datasets);
+  if(datasets.length > 5) {
+    loaderMoreComments.addEventListener('click', renderShowComents);
+  }
 };
 
-
 export {
-  initComment,
-  addedCommentsShowHandler,
   cleansСomments,
-  renderShowComents,
   createListComment,
 };
