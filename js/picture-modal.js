@@ -1,7 +1,5 @@
 import {
-  addedCommentsShowHandler,
   cleansСomments,
-  renderShowComents,
   createListComment,
 } from './comments.js';
 
@@ -17,7 +15,7 @@ function buttonCloseHendler() {
   document.body.classList.remove('modal-open');
   closeButtonModal.removeEventListener('click', buttonCloseHendler);
   document.removeEventListener('keydown', buttonCloseHendlerKey);
-  cleansСomments(renderShowComents);
+  cleansСomments();
 }
 
 function buttonCloseHendlerKey(evt) {
@@ -31,7 +29,6 @@ const userOpenMdal = () => {
   document.body.classList.add('modal-open');
   closeButtonModal.addEventListener('click', buttonCloseHendler);
   document.addEventListener('keydown', buttonCloseHendlerKey);
-  addedCommentsShowHandler(renderShowComents);
 };
 
 
@@ -43,13 +40,14 @@ const renderFullModalImage = (datasets, currentThumbail) => {
   bigPictureCaption.textContent = curentObject.description;
 
   createListComment(curentObject.comments);
+
 };
 
 const thumbnailClickHendler = (datasets) => {
   picture.addEventListener('click', (evt) => {
+    evt.preventDefault();
     const currentThumbail = evt.target.closest('a.picture');
     if(currentThumbail) {
-      evt.preventDefault();
       renderFullModalImage(datasets, currentThumbail);
       userOpenMdal();
     }
