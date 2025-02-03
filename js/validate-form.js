@@ -62,8 +62,8 @@ uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    console.log('Форма отправлена');
+    // console.log('Форма отправлена');
   } else {
-    console.log('Форма не отправлена');
+    // console.log('Форма не отправлена');
   }
 });
