@@ -1,5 +1,9 @@
 import {resizeHendler} from './resize-img.js';
-import {checkEffect} from './slider.js';
+import {
+  checkEffect,
+  resetSlider,
+} from './slider.js';
+import {resetPrestine} from './validate-form.js';
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
@@ -15,8 +19,8 @@ const buttonCloseHendler = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFile.value = '';
-  inputHashtags.value = '';
-  inputDescription.value = '';
+  resetPrestine();
+  resetSlider();
   inputHashtags.removeEventListener('keydown', removeCloseKeydown);
   inputDescription.removeEventListener('keydown', removeCloseKeydown);
   document.removeEventListener('keydown', keyCloseHendler);
