@@ -67,3 +67,9 @@ uploadForm.addEventListener('submit', (evt) => {
     // console.log('Форма не отправлена');
   }
 });
+
+function resetPrestine () {
+  pristine.reset();
+}
+
+export{resetPrestine};

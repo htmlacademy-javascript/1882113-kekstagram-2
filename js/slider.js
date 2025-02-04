@@ -86,4 +86,13 @@ function checkEffect(evt) {
   }
 }
 
-export {checkEffect,};
+function resetSlider() {
+  effectSlider.noUiSlider.reset();
+  uploadPreview.removeAttribute('style');
+  effectLevel.classList.add('hidden');
+}
+
+export {
+  checkEffect,
+  resetSlider
+};
