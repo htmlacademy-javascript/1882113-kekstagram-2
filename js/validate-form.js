@@ -20,7 +20,7 @@ const pristine = new Pristine(uploadForm, {
 const errorText = () => VALIDATE_MESSAGE[errorKey];
 
 const validateHashtags = (value)=> {
-  const validateArray = value.trim().split(' ');
+  const validateArray = value.toLowerCase().trim().split(' ');
   if(validateArray.length <= 5) {
     for(let i = 0; i < validateArray.length; i++) {
       for(let j = i + 1; j < validateArray.length; j++) {
