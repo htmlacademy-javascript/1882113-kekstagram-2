@@ -5,7 +5,7 @@ const SLIDER__SETTING = {
       min: 0,
       max: 1,
     },
-    start: 0,
+    start: 1,
     step: 0.1,
   },
   sepia: {
@@ -14,7 +14,7 @@ const SLIDER__SETTING = {
       min: 0,
       max: 1,
     },
-    start: 0,
+    start: 1,
     step: 0.1,
   },
   marvin:{
@@ -23,7 +23,7 @@ const SLIDER__SETTING = {
       min: 0,
       max: 100,
     },
-    start: 0,
+    start: 100,
     step: 1,
     unit: '%',
   },
@@ -33,7 +33,7 @@ const SLIDER__SETTING = {
       min: 0,
       max: 3,
     },
-    start: 0,
+    start: 3,
     step: 0.1,
     unit: 'px',
   },
@@ -43,7 +43,7 @@ const SLIDER__SETTING = {
       min: 1,
       max: 3,
     },
-    start: 1,
+    start: 3,
     step: 0.1,
   },
 };
@@ -51,10 +51,9 @@ const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
 const uploadPreview = document.querySelector('.img-upload__preview');
 const effectLevel = document.querySelector('.img-upload__effect-level');
-effectLevel.classList.add('hidden');
+
 
 let currentSetting;
-
 
 noUiSlider.create(effectSlider, {
   range: {
@@ -70,20 +69,38 @@ const changesIntensity = (effect, value, unit = '') =>
   `${effect}(${value}${unit})`;
 
 
-effectSlider.noUiSlider.on('slide', () => {
-  effectValue.value = effectSlider.noUiSlider.get();
-  uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
-});
-
-function checkEffect(evt) {
+function addedEffectHendler(evt) {
   uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
   } else {
+    effectLevel.classList.remove('hidden');
     effectSlider.noUiSlider.updateOptions(SLIDER__SETTING[evt.target.value]);
     currentSetting = SLIDER__SETTING[evt.target.value];
-    effectLevel.classList.remove('hidden');
+    effectSlider.noUiSlider.on('update', () => {
+      effectValue.value = effectSlider.noUiSlider.get();
+      uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
+    });
   }
 }
 
-export {checkEffect,};
+function resetSlider() {
+  effectSlider.noUiSlider.reset();
+  uploadPreview.removeAttribute('style');
+  effectLevel.classList.add('hidden');
+}
+
+function checkHiddenSlider() {
+  const effectRadio = document.querySelectorAll('.effects__radio');
+  for (let i = 0; i < effectRadio.length; i++) {
+    if(effectRadio[i].value === 'none' && effectRadio[i].hasAttribute('checked')) {
+      effectLevel.classList.add('hidden');
+    }
+  }
+}
+
+export {
+  addedEffectHendler,
+  resetSlider,
+  checkHiddenSlider,
+};

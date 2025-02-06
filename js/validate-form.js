@@ -10,17 +10,11 @@ const inputDescription = uploadForm.querySelector('.text__description');
 const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
 let errorKey;
 
-const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'img-upload__field-wrapper--error'
-}, true);
 
 const errorText = () => VALIDATE_MESSAGE[errorKey];
 
 const validateHashtags = (value)=> {
-  const validateArray = value.trim().split(' ');
+  const validateArray = value.replace(/\s+/g, ' ').toLowerCase().trim().split(' ');
   if(validateArray.length <= 5) {
     for(let i = 0; i < validateArray.length; i++) {
       for(let j = i + 1; j < validateArray.length; j++) {
@@ -42,7 +36,6 @@ const validateHashtags = (value)=> {
   errorKey = 'exceeded quantity hashtags';
   return false;
 
-
 };
 
 const validateSringLength = (value) => {
@@ -52,6 +45,13 @@ const validateSringLength = (value) => {
   }
   return true;
 };
+
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__field-wrapper--error'
+}, true);
 
 
 pristine.addValidator(inputHashtags, validateHashtags, errorText);
@@ -67,3 +67,9 @@ uploadForm.addEventListener('submit', (evt) => {
     // console.log('Форма не отправлена');
   }
 });
+
+function resetPrestine () {
+  pristine.reset();
+}
+
+export{resetPrestine};
