@@ -51,10 +51,9 @@ const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
 const uploadPreview = document.querySelector('.img-upload__preview');
 const effectLevel = document.querySelector('.img-upload__effect-level');
-effectLevel.classList.add('hidden');
+
 
 let currentSetting;
-
 
 noUiSlider.create(effectSlider, {
   range: {
@@ -70,12 +69,7 @@ const changesIntensity = (effect, value, unit = '') =>
   `${effect}(${value}${unit})`;
 
 
-// effectSlider.noUiSlider.on('update', () => {
-//   effectValue.value = effectSlider.noUiSlider.get();
-//   uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
-// });
-
-function checkEffect(evt) {
+function addedEffectHendler(evt) {
   uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
@@ -96,7 +90,17 @@ function resetSlider() {
   effectLevel.classList.add('hidden');
 }
 
+function checkHiddenSlider() {
+  const effectRadio = document.querySelectorAll('.effects__radio');
+  for (let i = 0; i < effectRadio.length; i++) {
+    if(effectRadio[i].value === 'none' && effectRadio[i].hasAttribute('checked')) {
+      effectLevel.classList.add('hidden');
+    }
+  }
+}
+
 export {
-  checkEffect,
-  resetSlider
+  addedEffectHendler,
+  resetSlider,
+  checkHiddenSlider,
 };

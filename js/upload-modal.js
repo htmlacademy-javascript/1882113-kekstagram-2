@@ -1,7 +1,8 @@
 import {resizeHendler} from './resize-img.js';
 import {
-  checkEffect,
+  addedEffectHendler,
   resetSlider,
+  checkHiddenSlider,
 } from './slider.js';
 import {resetPrestine} from './validate-form.js';
 const uploadFile = document.querySelector('.img-upload__input');
@@ -25,7 +26,7 @@ const buttonCloseHendler = () => {
   inputDescription.removeEventListener('keydown', removeCloseKeydown);
   document.removeEventListener('keydown', keyCloseHendler);
   scale.removeEventListener('click', resizeHendler);
-  effectList.removeEventListener('change', checkEffect);
+  effectList.removeEventListener('change', addedEffectHendler);
   buttonClose.removeEventListener('click', buttonCloseHendler);
 };
 
@@ -41,6 +42,7 @@ function removeCloseKeydown(evt) {
 
 
 uploadFile.addEventListener('change', () => {
+  checkHiddenSlider();
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   buttonClose.addEventListener('click', buttonCloseHendler);
@@ -48,5 +50,5 @@ uploadFile.addEventListener('change', () => {
   inputHashtags.addEventListener('keydown', removeCloseKeydown);
   inputDescription.addEventListener('keydown', removeCloseKeydown);
   scale.addEventListener('click', resizeHendler);
-  effectList.addEventListener('change', checkEffect);
+  effectList.addEventListener('change', addedEffectHendler);
 });
