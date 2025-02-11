@@ -62,9 +62,18 @@ uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    // console.log('Форма отправлена');
+    console.log('Форма отправлена');
+    const formData = new FormData(evt.target);
+    fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      body: formData,
+    });
+
   } else {
-    // console.log('Форма не отправлена');
+    console.log('Форма не отправлена');
   }
 });
 
