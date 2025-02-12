@@ -1,4 +1,6 @@
 const templateError = document.querySelector('#data-error').content;
+const sendTemplateSuccess = document.querySelector('#success').content;
+const sendTemplateError = document.querySelector('#error').content;
 
 const createMessageError = () => {
   const modalError = templateError.cloneNode(true);
@@ -8,6 +10,13 @@ const createMessageError = () => {
     containerError.remove();
   }, 5000);
 };
+
+
+const createInfoModal = (template) => {
+  const templateInstanse = template.cloneNode(true);
+  document.body.appendChild(templateInstanse);
+};
+
 
 const getData = (renderThumbnails) => {
   fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
@@ -21,4 +30,22 @@ const getData = (renderThumbnails) => {
 };
 
 
-export {getData};
+const sendData = (evt) => {
+  const formData = new FormData(evt.target);
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(() => {
+      createInfoModal(sendTemplateSuccess);
+    })
+    .catch(() => {
+      createInfoModal(sendTemplateError);
+    });
+};
+
+
+export {
+  getData,
+  sendData,
+};

@@ -1,3 +1,4 @@
+import { sendData } from './api';
 const VALIDATE_MESSAGE = {
   'invalid hashtag': 'введён невалидный хэштег',
   'repeat hashtags': 'хэштеги повторяются',
@@ -63,15 +64,7 @@ uploadForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if(isValid) {
     console.log('Форма отправлена');
-    const formData = new FormData(evt.target);
-    fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      body: formData,
-    });
-
+    sendData(evt);
   } else {
     console.log('Форма не отправлена');
   }
