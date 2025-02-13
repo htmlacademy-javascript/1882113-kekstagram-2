@@ -1,4 +1,5 @@
 import { sendData } from './api';
+
 const VALIDATE_MESSAGE = {
   'invalid hashtag': 'введён невалидный хэштег',
   'repeat hashtags': 'хэштеги повторяются',

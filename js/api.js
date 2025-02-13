@@ -1,21 +1,12 @@
+import{
+  renderInfoModal,
+  renderMessageError,
+  buttonCloseHendler,
+} from './upload-modal';
+
 const templateError = document.querySelector('#data-error').content;
 const sendTemplateSuccess = document.querySelector('#success').content;
 const sendTemplateError = document.querySelector('#error').content;
-
-const createMessageError = () => {
-  const modalError = templateError.cloneNode(true);
-  document.body.appendChild(modalError);
-  setTimeout(() => {
-    const containerError = document.querySelector('.data-error');
-    containerError.remove();
-  }, 5000);
-};
-
-
-const createInfoModal = (template) => {
-  const templateInstanse = template.cloneNode(true);
-  document.body.appendChild(templateInstanse);
-};
 
 
 const getData = (renderThumbnails) => {
@@ -25,7 +16,7 @@ const getData = (renderThumbnails) => {
       renderThumbnails(datasets);
     })
     .catch(() => {
-      createMessageError();
+      renderMessageError(templateError);
     });
 };
 
@@ -36,11 +27,16 @@ const sendData = (evt) => {
     method: 'POST',
     body: formData,
   })
-    .then(() => {
-      createInfoModal(sendTemplateSuccess);
+    .then((response) => {
+      if(response.ok) {
+        renderInfoModal(sendTemplateSuccess);
+        buttonCloseHendler();
+      } else {
+        renderInfoModal(sendTemplateError);
+      }
     })
     .catch(() => {
-      createInfoModal(sendTemplateError);
+      renderInfoModal(sendTemplateError);
     });
 };
 
