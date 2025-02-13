@@ -1,3 +1,5 @@
+import { sendData } from './api';
+
 const VALIDATE_MESSAGE = {
   'invalid hashtag': 'введён невалидный хэштег',
   'repeat hashtags': 'хэштеги повторяются',
@@ -62,9 +64,10 @@ uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    // console.log('Форма отправлена');
+    console.log('Форма отправлена');
+    sendData(evt);
   } else {
-    // console.log('Форма не отправлена');
+    console.log('Форма не отправлена');
   }
 });
 
