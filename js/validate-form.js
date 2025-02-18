@@ -1,12 +1,24 @@
 import { sendData } from './api';
+import{
+  renderInfoModal,
+} from './upload-modal';
 
 const VALIDATE_MESSAGE = {
-  'invalid hashtag': 'введён невалидный хэштег',
-  'repeat hashtags': 'хэштеги повторяются',
-  'exceeded quantity hashtags': 'превышено количество хэштегов',
+  'exceeded quantity': 'Нельзя указать больше пяти хэштегов',
+  'max length': 'максимальная длина одного хэштега 20 символов, включая решётку',
+  'space missing': '# Разделяються пробелами',
+  'error format': 'Должен начинаться с # и содержать больше одного символа',
+  'repeat hashtag': 'Один и тот же хэштег не может быть использован дважды',
   'comment max length': 'длина комментария больше 140 символов',
 };
+
+const SUBMIT_BUTTON_TEXT = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...',
+};
+
 const uploadForm = document.querySelector('.img-upload__form');
+const uploadButton = document.querySelector('#upload-submit');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
 const inputDescription = uploadForm.querySelector('.text__description');
 const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -15,30 +27,39 @@ let errorKey;
 
 const errorText = () => VALIDATE_MESSAGE[errorKey];
 
-const validateHashtags = (value)=> {
-  const validateArray = value.replace(/\s+/g, ' ').toLowerCase().trim().split(' ');
-  if(validateArray.length <= 5) {
-    for(let i = 0; i < validateArray.length; i++) {
-      for(let j = i + 1; j < validateArray.length; j++) {
-        if(validateArray[j] === validateArray[i]) {
-          errorKey = 'repeat hashtags';
-          return false;
-        }
-      }
-      if(validateArray[i] !== '') {
-        const isValid = patternHashtags.test(validateArray[i]);
-        if(!isValid) {
-          errorKey = 'invalid hashtag';
-          return false;
-        }
-      }
-    }
-    return true;
+const validateHashtags = (input) => {
+  const trimedInput = input.trim().toLowerCase();
+  const hashtags = trimedInput.split(/\s+/);
+  const uniqueHashtags = new Set();
+  if(hashtags.length > 5) {
+    errorKey = 'exceeded quantity';
+    return false;
   }
-  errorKey = 'exceeded quantity hashtags';
-  return false;
+  for(const hashtag of hashtags) {
+    if(hashtag.length > 20) {
+      errorKey = 'max length';
+      return false;
+    }
 
+    if(hashtag.split('#').length > 2) {
+      errorKey = 'space missing';
+      return false;
+    }
+
+    if(!patternHashtags.test(hashtag) && hashtag !== '') {
+      errorKey = 'error format';
+      return false;
+    }
+
+    if(uniqueHashtags.has(hashtag)) {
+      errorKey = 'repeat hashtag';
+      return false;
+    }
+    uniqueHashtags.add(hashtag);
+  }
+  return true;
 };
+
 
 const validateSringLength = (value) => {
   if(value.length > 140) {
@@ -59,13 +80,34 @@ const pristine = new Pristine(uploadForm, {
 pristine.addValidator(inputHashtags, validateHashtags, errorText);
 pristine.addValidator(inputDescription, validateSringLength, errorText);
 
+const renderInfoModalSuccess = () => {
+  const sendTemplateSuccess = document.querySelector('#success').content;
+  renderInfoModal(sendTemplateSuccess);
+};
+const renderInfoModalError = () => {
+  const sendTemplateError = document.querySelector('#error').content;
+  renderInfoModal(sendTemplateError);
+};
+
+const blockSubmitButton = () => {
+  uploadButton.disabled = true;
+  uploadButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  uploadButton.disabled = false;
+  uploadButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
+};
+
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
     console.log('Форма отправлена');
-    sendData(evt);
+    blockSubmitButton();
+    sendData(new FormData (evt.target), renderInfoModalSuccess, renderInfoModalError)
+      .finally(unblockSubmitButton);
   } else {
     console.log('Форма не отправлена');
   }

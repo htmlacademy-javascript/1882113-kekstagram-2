@@ -15,10 +15,10 @@ const effectList = document.querySelector('.effects__list');
 const scale = uploadOverlay.querySelector('.scale');
 let isInfoModalOpen = false;
 
-
 const setInfoModelHandler = (modal, button) => {
   const closeInfoModlaHendler = () => {
     modal.remove();
+    isInfoModalOpen = false;
     cleanInfoModalHendler();
   };
 
@@ -43,26 +43,31 @@ const setInfoModelHandler = (modal, button) => {
   modal.children[0].addEventListener('click', stopsSpread);
 };
 
-const renderInfoModal = (template) => {
+const rendeFragment = (template) => {
   const fragment = document.createDocumentFragment();
   const templateInstanse = template.cloneNode(true);
   const modalClassName = templateInstanse.children[0].className;
   fragment.appendChild(templateInstanse);
   document.body.appendChild(fragment);
+  return modalClassName;
+};
+
+const renderInfoModal = (template) => {
+  const modalClassName = rendeFragment(template);
   const modal = document.querySelector(`.${modalClassName}`);
   const modalButton = document.querySelector(`.${modalClassName}__button`);
   setInfoModelHandler(modal, modalButton);
   isInfoModalOpen = true;
 };
 
-const renderMessageError = (element) => {
-  renderInfoModal(element);
+const renderMessageError = () => {
+  const templateError = document.querySelector('#data-error').content;
+  rendeFragment(templateError);
   setTimeout(() => {
     const containerError = document.querySelector('.data-error');
     containerError.remove();
   }, 5000);
 };
-
 
 const buttonCloseHendler = () => {
   uploadOverlay.classList.add('hidden');

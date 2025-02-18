@@ -1,44 +1,29 @@
-import{
-  renderInfoModal,
-  renderMessageError,
-  buttonCloseHendler,
-} from './upload-modal';
-
-const templateError = document.querySelector('#data-error').content;
-const sendTemplateSuccess = document.querySelector('#success').content;
-const sendTemplateError = document.querySelector('#error').content;
-
-
-const getData = (renderThumbnails) => {
+const getData = (renderElement, renderError) => {
   fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
     .then(((response) => response.json()))
     .then((datasets) => {
-      renderThumbnails(datasets);
+      renderElement(datasets);
     })
     .catch(() => {
-      renderMessageError(templateError);
+      renderError();
     });
 };
 
 
-const sendData = (evt) => {
-  const formData = new FormData(evt.target);
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-    method: 'POST',
-    body: formData,
+const sendData = (body, successModal, errorModal) => fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+  method: 'POST',
+  body,
+})
+  .then((response) => {
+    if(response.ok) {
+      successModal();
+    } else {
+      errorModal();
+    }
   })
-    .then((response) => {
-      if(response.ok) {
-        renderInfoModal(sendTemplateSuccess);
-        buttonCloseHendler();
-      } else {
-        renderInfoModal(sendTemplateError);
-      }
-    })
-    .catch(() => {
-      renderInfoModal(sendTemplateError);
-    });
-};
+  .catch(() => {
+    errorModal();
+  });
 
 
 export {

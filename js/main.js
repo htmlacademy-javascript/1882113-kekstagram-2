@@ -7,6 +7,7 @@ import './validate-form.js';
 import './resize-img.js';
 import './slider.js';
 import {renderThumbnails} from './miniature.js';
+import {renderMessageError} from './upload-modal.js';
 import { getData } from './api.js';
 
-getData(renderThumbnails);
+getData(renderThumbnails, renderMessageError);
