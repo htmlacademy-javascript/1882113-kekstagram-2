@@ -1,6 +1,7 @@
 import { sendData } from './api';
 import{
-  renderInfoModal,
+  rendeMessageModal,
+  buttonCloseHendler,
 } from './upload-modal';
 
 const VALIDATE_MESSAGE = {
@@ -82,11 +83,13 @@ pristine.addValidator(inputDescription, validateSringLength, errorText);
 
 const renderInfoModalSuccess = () => {
   const sendTemplateSuccess = document.querySelector('#success').content;
-  renderInfoModal(sendTemplateSuccess);
+  const addedModalHendler = rendeMessageModal(sendTemplateSuccess);
+  addedModalHendler();
 };
 const renderInfoModalError = () => {
   const sendTemplateError = document.querySelector('#error').content;
-  renderInfoModal(sendTemplateError);
+  const addedModalHendler = rendeMessageModal(sendTemplateError);
+  addedModalHendler();
 };
 
 const blockSubmitButton = () => {
@@ -99,22 +102,29 @@ const unblockSubmitButton = () => {
   uploadButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
 };
 
-
-uploadForm.addEventListener('submit', (evt) => {
+const userFormSubmitHendler = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    console.log('Форма отправлена');
     blockSubmitButton();
-    sendData(new FormData (evt.target), renderInfoModalSuccess, renderInfoModalError)
+    sendData(new FormData (evt.target))
+      .then(() => {
+        renderInfoModalSuccess();
+        buttonCloseHendler();
+      })
+      .catch(() => {
+        renderInfoModalError();
+      })
       .finally(unblockSubmitButton);
-  } else {
-    console.log('Форма не отправлена');
   }
-});
+};
+
 
 function resetPrestine () {
   pristine.reset();
 }
 
-export{resetPrestine};
+export{
+  userFormSubmitHendler,
+  resetPrestine,
+};

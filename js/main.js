@@ -10,4 +10,11 @@ import {renderThumbnails} from './miniature.js';
 import {renderMessageError} from './upload-modal.js';
 import { getData } from './api.js';
 
-getData(renderThumbnails, renderMessageError);
+getData()
+  .then((dataset) => {
+    renderThumbnails(dataset);
+  })
+  .catch(() => {
+    renderMessageError();
+  });
+

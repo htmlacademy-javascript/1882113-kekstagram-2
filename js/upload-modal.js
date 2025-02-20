@@ -4,7 +4,10 @@ import {
   resetSlider,
   checkHiddenSlider,
 } from './slider.js';
-import {resetPrestine} from './validate-form.js';
+import {
+  resetPrestine,
+  userFormSubmitHendler,
+} from './validate-form.js';
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
@@ -43,26 +46,23 @@ const setInfoModelHandler = (modal, button) => {
   modal.children[0].addEventListener('click', stopsSpread);
 };
 
-const rendeFragment = (template) => {
+const rendeMessageModal = (template) => {
   const fragment = document.createDocumentFragment();
   const templateInstanse = template.cloneNode(true);
   const modalClassName = templateInstanse.children[0].className;
   fragment.appendChild(templateInstanse);
   document.body.appendChild(fragment);
-  return modalClassName;
-};
-
-const renderInfoModal = (template) => {
-  const modalClassName = rendeFragment(template);
-  const modal = document.querySelector(`.${modalClassName}`);
-  const modalButton = document.querySelector(`.${modalClassName}__button`);
-  setInfoModelHandler(modal, modalButton);
-  isInfoModalOpen = true;
+  return () => {
+    const modal = document.querySelector(`.${modalClassName}`);
+    const modalButton = document.querySelector(`.${modalClassName}__button`);
+    setInfoModelHandler(modal, modalButton);
+    isInfoModalOpen = true;
+  };
 };
 
 const renderMessageError = () => {
   const templateError = document.querySelector('#data-error').content;
-  rendeFragment(templateError);
+  rendeMessageModal(templateError);
   setTimeout(() => {
     const containerError = document.querySelector('.data-error');
     containerError.remove();
@@ -76,6 +76,7 @@ const buttonCloseHendler = () => {
   uploadFile.value = '';
   resetPrestine();
   resetSlider();
+  uploadForm.removeEventListener('submit', userFormSubmitHendler);
   inputHashtags.removeEventListener('keydown', stopsSpread);
   inputDescription.removeEventListener('keydown', stopsSpread);
   document.removeEventListener('keydown', keyCloseHendler);
@@ -99,6 +100,7 @@ uploadFile.addEventListener('change', () => {
   checkHiddenSlider();
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  uploadForm.addEventListener('submit', userFormSubmitHendler);
   buttonClose.addEventListener('click', buttonCloseHendler);
   document.addEventListener('keydown', keyCloseHendler);
   inputHashtags.addEventListener('keydown', stopsSpread);
@@ -108,7 +110,7 @@ uploadFile.addEventListener('change', () => {
 });
 
 export{
-  renderInfoModal,
+  rendeMessageModal,
   renderMessageError,
   buttonCloseHendler,
 };
