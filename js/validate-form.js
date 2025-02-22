@@ -1,46 +1,71 @@
+import { sendData } from './api';
+import{
+  renderFailedModal,
+  renderSuccessModal,
+  buttonCloseHendler,
+} from './upload-modal';
+
 const VALIDATE_MESSAGE = {
-  'invalid hashtag': 'введён невалидный хэштег',
-  'repeat hashtags': 'хэштеги повторяются',
-  'exceeded quantity hashtags': 'превышено количество хэштегов',
-  'comment max length': 'длина комментария больше 140 символов',
+  MAX_HASHTAGS: 'Нельзя указать больше пяти хэштегов',
+  MAX_LENGTH: 'максимальная длина одного хэштега 20 символов, включая решётку',
+  SPACE_MISSING: '# Разделяються пробелами',
+  ERROR_FORMAT: 'Должен начинаться с # и содержать больше одного символа',
+  REPEAT_HASHTAG: 'Один и тот же хэштег не может быть использован дважды',
+  COMMENT_MAX_LENGTH: 'длина комментария больше 140 символов',
 };
+
+const SUBMIT_BUTTON_TEXT = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...',
+};
+
 const uploadForm = document.querySelector('.img-upload__form');
+const uploadButton = document.querySelector('#upload-submit');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
 const inputDescription = uploadForm.querySelector('.text__description');
 const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
-let errorKey;
+let errorKey = null;
 
 
-const errorText = () => VALIDATE_MESSAGE[errorKey];
+const returnErrorText = () => errorKey;
 
-const validateHashtags = (value)=> {
-  const validateArray = value.replace(/\s+/g, ' ').toLowerCase().trim().split(' ');
-  if(validateArray.length <= 5) {
-    for(let i = 0; i < validateArray.length; i++) {
-      for(let j = i + 1; j < validateArray.length; j++) {
-        if(validateArray[j] === validateArray[i]) {
-          errorKey = 'repeat hashtags';
-          return false;
-        }
-      }
-      if(validateArray[i] !== '') {
-        const isValid = patternHashtags.test(validateArray[i]);
-        if(!isValid) {
-          errorKey = 'invalid hashtag';
-          return false;
-        }
-      }
-    }
-    return true;
+const validateHashtags = (input) => {
+  const trimedInput = input.trim().toLowerCase();
+  const hashtags = trimedInput.split(/\s+/);
+  const uniqueHashtags = new Set();
+  if(hashtags.length > 5) {
+    errorKey = VALIDATE_MESSAGE.MAX_HASHTAGS;
+    return false;
   }
-  errorKey = 'exceeded quantity hashtags';
-  return false;
+  for(const hashtag of hashtags) {
+    if(hashtag.length > 20) {
+      errorKey = VALIDATE_MESSAGE.MAX_LENGTH;
+      return false;
+    }
 
+    if(hashtag.split('#').length > 2) {
+      errorKey = VALIDATE_MESSAGE.SPACE_MISSING;
+      return false;
+    }
+
+    if(!patternHashtags.test(hashtag) && hashtag !== '') {
+      errorKey = VALIDATE_MESSAGE.ERROR_FORMAT;
+      return false;
+    }
+
+    if(uniqueHashtags.has(hashtag)) {
+      errorKey = VALIDATE_MESSAGE.REPEAT_HASHTAG;
+      return false;
+    }
+    uniqueHashtags.add(hashtag);
+  }
+  return true;
 };
+
 
 const validateSringLength = (value) => {
   if(value.length > 140) {
-    errorKey = 'comment max length';
+    errorKey = VALIDATE_MESSAGE.COMMENT_MAX_LENGTH;
     return false;
   }
   return true;
@@ -53,23 +78,42 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 }, true);
 
+pristine.addValidator(inputHashtags, validateHashtags, returnErrorText);
+pristine.addValidator(inputDescription, validateSringLength, returnErrorText);
 
-pristine.addValidator(inputHashtags, validateHashtags, errorText);
-pristine.addValidator(inputDescription, validateSringLength, errorText);
+const blockSubmitButton = () => {
+  uploadButton.disabled = true;
+  uploadButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+};
 
+const unblockSubmitButton = () => {
+  uploadButton.disabled = false;
+  uploadButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
+};
 
-uploadForm.addEventListener('submit', (evt) => {
+const userFormSubmitHendler = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
-    // console.log('Форма отправлена');
-  } else {
-    // console.log('Форма не отправлена');
+    blockSubmitButton();
+    sendData(new FormData (evt.target))
+      .then(() => {
+        renderSuccessModal();
+        buttonCloseHendler();
+      })
+      .catch(() => {
+        renderFailedModal();
+      })
+      .finally(unblockSubmitButton);
   }
-});
+};
+
 
 function resetPrestine () {
   pristine.reset();
 }
 
-export{resetPrestine};
+export{
+  userFormSubmitHendler,
+  resetPrestine,
+};

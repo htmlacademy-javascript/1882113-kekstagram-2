@@ -1,3 +1,4 @@
+import {thumbnailClickHendler} from './picture-modal.js';
 const template = document.querySelector('#picture').content;
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
@@ -21,6 +22,7 @@ const renderThumbnails = (datasets) => {
     fragment.appendChild(createThumbnails(dataset));
   });
   pictures.appendChild(fragment);
+  thumbnailClickHendler(datasets);
 };
 
 export {renderThumbnails};
