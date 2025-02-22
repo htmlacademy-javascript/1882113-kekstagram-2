@@ -1,6 +1,7 @@
 import { sendData } from './api';
 import{
-  rendeMessageModal,
+  renderFailedModal,
+  renderSuccessModal,
   buttonCloseHendler,
 } from './upload-modal';
 
@@ -77,20 +78,8 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 }, true);
 
-
 pristine.addValidator(inputHashtags, validateHashtags, returnErrorText);
 pristine.addValidator(inputDescription, validateSringLength, returnErrorText);
-
-const renderInfoModalSuccess = () => {
-  const sendTemplateSuccess = document.querySelector('#success').content;
-  const addedModalHendler = rendeMessageModal(sendTemplateSuccess);
-  addedModalHendler();
-};
-const renderInfoModalError = () => {
-  const sendTemplateError = document.querySelector('#error').content;
-  const addedModalHendler = rendeMessageModal(sendTemplateError);
-  addedModalHendler();
-};
 
 const blockSubmitButton = () => {
   uploadButton.disabled = true;
@@ -109,11 +98,11 @@ const userFormSubmitHendler = (evt) => {
     blockSubmitButton();
     sendData(new FormData (evt.target))
       .then(() => {
-        renderInfoModalSuccess();
+        renderSuccessModal();
         buttonCloseHendler();
       })
       .catch(() => {
-        renderInfoModalError();
+        renderFailedModal();
       })
       .finally(unblockSubmitButton);
   }
