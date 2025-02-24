@@ -1,7 +1,10 @@
 import {thumbnailClickHendler} from './picture-modal.js';
+import { showBlockFilters } from './filter-miniature.js';
+import { debounce } from './util.js';
 const template = document.querySelector('#picture').content;
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
+const filterForm = document.querySelector('.img-filters__form');
 
 
 const createThumbnails = ({description, id, likes, url, comments}) => {
@@ -18,11 +21,17 @@ const createThumbnails = ({description, id, likes, url, comments}) => {
 
 
 const renderThumbnails = (datasets) => {
-  datasets.forEach((dataset) => {
-    fragment.appendChild(createThumbnails(dataset));
+  datasets.forEach((Dataset) => {
+    fragment.appendChild(createThumbnails(Dataset));
   });
   pictures.appendChild(fragment);
-  thumbnailClickHendler(datasets);
 };
 
-export {renderThumbnails};
+const addedThumbnails = (datasets) => {
+  renderThumbnails(datasets);
+  thumbnailClickHendler(datasets);
+  const addFormFilterHendler = showBlockFilters(debounce(renderThumbnails, 1000), datasets);
+  filterForm.addEventListener('click', addFormFilterHendler);
+};
+
+export {addedThumbnails};
