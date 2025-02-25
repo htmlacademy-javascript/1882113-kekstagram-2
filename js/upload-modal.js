@@ -8,10 +8,14 @@ import {
   resetPrestine,
   userFormSubmitHendler,
 } from './validate-form.js';
+
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
+const uploadPreview = uploadOverlay.querySelector('.img-upload__preview img');
 const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
 const effectList = document.querySelector('.effects__list');
@@ -115,6 +119,12 @@ function stopsSpread(evt) {
 
 
 uploadFile.addEventListener('change', () => {
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if(matches) {
+    uploadPreview.src = URL.createObjectURL(file);
+  }
   checkHiddenSlider();
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');

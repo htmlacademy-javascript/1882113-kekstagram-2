@@ -30,7 +30,7 @@ const renderThumbnails = (datasets) => {
 const addedThumbnails = (datasets) => {
   renderThumbnails(datasets);
   thumbnailClickHendler(datasets);
-  const addFormFilterHendler = showBlockFilters(debounce(renderThumbnails, 1000), datasets);
+  const addFormFilterHendler = showBlockFilters(debounce(renderThumbnails, 500), datasets);
   filterForm.addEventListener('click', addFormFilterHendler);
 };
 

@@ -7,7 +7,6 @@ const createIDGenerator = () => {
   };
 };
 
-// const createRandomNumber = (min, max) => Math.round(Math.random() * (max - min) + min);
 const createRandomNumber = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -19,7 +18,7 @@ const returnUniqueID = (min, max) => {
 
   return () => {
     let uniqueId = createRandomNumber(min, max);
-    if(previousValue.length >= 25) {
+    if(previousValue.length >= 10) {
       // console.error('Перебраны все числа из диапазона');
       return null;
     }
