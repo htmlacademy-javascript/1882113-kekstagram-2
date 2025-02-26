@@ -28,7 +28,7 @@ const createRandomArray = (arr) => {
   return randomArr;
 };
 
-const showBlockFilters = (cb = null, arr) => {
+const showBlockFilters = (cb, arr) => {
   blockFilters.classList.remove('img-filters--inactive');
   const copyDatasets = arr.slice();
 

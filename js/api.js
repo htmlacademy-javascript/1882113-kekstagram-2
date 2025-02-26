@@ -1,4 +1,4 @@
-const BASE_URL = 'https://31.javascript.htmlacademy.pro';
+const BASE_URL = 'https://32.javascript.htmlacademy.pro';
 
 const Method = {
   GET: 'GET',
@@ -7,7 +7,7 @@ const Method = {
 
 const Route = {
   GET: '/kekstagram/data',
-  POST: '/kekstagram',
+  POST: '/kekstagram/',
 };
 
 const ErrorText = {

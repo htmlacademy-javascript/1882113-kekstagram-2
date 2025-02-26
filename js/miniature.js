@@ -21,8 +21,8 @@ const createThumbnails = ({description, id, likes, url, comments}) => {
 
 
 const renderThumbnails = (datasets) => {
-  datasets.forEach((Dataset) => {
-    fragment.appendChild(createThumbnails(Dataset));
+  datasets.forEach((dataset) => {
+    fragment.appendChild(createThumbnails(dataset));
   });
   pictures.appendChild(fragment);
 };
@@ -34,4 +34,4 @@ const addedThumbnails = (datasets) => {
   filterForm.addEventListener('click', addFormFilterHendler);
 };
 
-export {addedThumbnails};
+export {addedThumbnails,};
