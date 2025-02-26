@@ -65,8 +65,7 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 
-const changesIntensity = (effect, value, unit = '') =>
-  `${effect}(${value}${unit})`;
+const changesIntensity = (effect, value, unit = '') => `${effect}(${parseFloat(value)}${unit})`;
 
 
 function addedEffectHendler(evt) {

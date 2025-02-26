@@ -16,6 +16,7 @@ const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
 const uploadPreview = uploadOverlay.querySelector('.img-upload__preview img');
+const uploadEffectPreview = uploadOverlay.querySelectorAll('.effects__preview');
 const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
 const effectList = document.querySelector('.effects__list');
@@ -123,7 +124,11 @@ uploadFile.addEventListener('change', () => {
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if(matches) {
-    uploadPreview.src = URL.createObjectURL(file);
+    const urlFile = URL.createObjectURL(file);
+    uploadPreview.src = urlFile;
+    uploadEffectPreview.forEach((el) => {
+      el.style.backgroundImage = `url(${urlFile})`;
+    });
   }
   checkHiddenSlider();
   uploadOverlay.classList.remove('hidden');
