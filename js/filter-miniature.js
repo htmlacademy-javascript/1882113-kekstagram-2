@@ -6,8 +6,8 @@ const FILTER_ID = {
   DISCUSSED: 'filter-discussed',
 };
 
-const FilterCofig = {
-  [FILTER_ID.DEFAULT]: returnDefaltArray,
+const FilterConfig = {
+  [FILTER_ID.DEFAULT]: returnDefaultArray,
   [FILTER_ID.RANDOM]: createRandomArray,
   [FILTER_ID.DISCUSSED]: doesFiltration,
 
@@ -17,7 +17,7 @@ const blockFilters = document.querySelector('.img-filters');
 const filterForm = blockFilters.querySelector('.img-filters__form');
 const arrButtonsFilter = filterForm.querySelectorAll('button');
 
-function returnDefaltArray (arr) {
+function returnDefaultArray (arr) {
   arr.sort((a, b) => {
     if(a.id < b.id) {
       return -1;
@@ -53,7 +53,7 @@ const showBlockFilters = (cb, arr) => {
   filterForm.addEventListener('click', (evt) => {
     arrButtonsFilter.forEach((button) => button.classList.remove('img-filters__button--active'));
     evt.target.classList.add('img-filters__button--active');
-    cb(FilterCofig[evt.target.id](copyDatasets));
+    cb(FilterConfig[evt.target.id](copyDatasets));
   });
 };
 export {showBlockFilters};

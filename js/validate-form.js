@@ -2,11 +2,11 @@ import { sendData } from './api';
 import{
   renderFailedModal,
   renderSuccessModal,
-  buttonCloseHendler,
+  buttonCloseHandler,
 } from './upload-modal';
 
 const VALIDATE_MESSAGE = {
-  MAX_HASHTAGS: 'Нельзя указать больше пяти хэштегов',
+  MAX_HASHTAGS: 'Нельзя указать больше 5ти хэштегов',
   MAX_LENGTH: 'максимальная длина одного хэштега 20 символов, включая решётку',
   SPACE_MISSING: '# Разделяються пробелами',
   ERROR_FORMAT: 'Должен начинаться с # и содержать больше одного символа',
@@ -70,7 +70,7 @@ const validateHashtags = (input) => {
 };
 
 
-const validateSringLength = (value) => {
+const validateStringLength = (value) => {
   if(value.length > VALIDATE_SETTING.MAX_DESCRIPTION_LENGTH) {
     errorKey = VALIDATE_MESSAGE.COMMENT_MAX_LENGTH;
     return false;
@@ -86,7 +86,7 @@ const pristine = new Pristine(uploadForm, {
 }, true);
 
 pristine.addValidator(inputHashtags, validateHashtags, returnErrorText);
-pristine.addValidator(inputDescription, validateSringLength, returnErrorText);
+pristine.addValidator(inputDescription, validateStringLength, returnErrorText);
 
 const blockSubmitButton = () => {
   uploadButton.disabled = true;
@@ -98,7 +98,7 @@ const unblockSubmitButton = () => {
   uploadButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
 };
 
-const userFormSubmitHendler = (evt) => {
+const userFormSubmitHandler = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
@@ -106,7 +106,7 @@ const userFormSubmitHendler = (evt) => {
     sendData(new FormData (evt.target))
       .then(() => {
         renderSuccessModal();
-        buttonCloseHendler();
+        buttonCloseHandler();
       })
       .catch(() => {
         renderFailedModal();
@@ -121,6 +121,6 @@ function resetPrestine () {
 }
 
 export{
-  userFormSubmitHendler,
+  userFormSubmitHandler,
   resetPrestine,
 };

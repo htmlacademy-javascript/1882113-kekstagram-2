@@ -8,7 +8,7 @@ const resizeImage = document.querySelector('.img-upload__preview > img');
 let scaleNumber = 1;
 let scaleValueNumber = 100;
 
-const resizeHendler = (evt) => {
+const resizeHandler = (evt) => {
   if(evt.target.className.includes('smaller')) {
     if(scaleValueNumber > 25) {
       resizeImage.style.transform = `scale(${scaleNumber -= STEP.SCALE})`;
@@ -22,4 +22,4 @@ const resizeHendler = (evt) => {
   }
 };
 
-export {resizeHendler};
+export {resizeHandler};

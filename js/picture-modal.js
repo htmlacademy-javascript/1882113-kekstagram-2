@@ -10,25 +10,25 @@ const closeButtonModal = modalPicture.querySelector('.big-picture__cancel');
 const modalLikes = modalPicture.querySelector('.likes-count');
 const bigPictureCaption = modalPicture.querySelector('.social__caption');
 
-function buttonCloseHendler() {
+function buttonCloseHandler() {
   modalPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  closeButtonModal.removeEventListener('click', buttonCloseHendler);
-  document.removeEventListener('keydown', buttonCloseHendlerKey);
+  closeButtonModal.removeEventListener('click', buttonCloseHandler);
+  document.removeEventListener('keydown', buttonCloseHandlerKey);
   cleansСomments();
 }
 
-function buttonCloseHendlerKey(evt) {
+function buttonCloseHandlerKey(evt) {
   if(evt.key === 'Escape') {
-    buttonCloseHendler();
+    buttonCloseHandler();
   }
 }
 
-const userOpenMdal = () => {
+const userOpenModal = () => {
   modalPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  closeButtonModal.addEventListener('click', buttonCloseHendler);
-  document.addEventListener('keydown', buttonCloseHendlerKey);
+  closeButtonModal.addEventListener('click', buttonCloseHandler);
+  document.addEventListener('keydown', buttonCloseHandlerKey);
 };
 
 
@@ -43,15 +43,15 @@ const renderFullModalImage = (datasets, currentThumbail) => {
 
 };
 
-const thumbnailClickHendler = (datasets) => {
+const thumbnailClickHandler = (datasets) => {
   picture.addEventListener('click', (evt) => {
     const currentThumbail = evt.target.closest('a.picture');
     if(currentThumbail) {
       evt.preventDefault();
       renderFullModalImage(datasets, currentThumbail);
-      userOpenMdal();
+      userOpenModal();
     }
   });
 };
 
-export {thumbnailClickHendler,};
+export {thumbnailClickHandler,};

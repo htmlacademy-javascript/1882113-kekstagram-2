@@ -1,4 +1,4 @@
-import {thumbnailClickHendler} from './picture-modal.js';
+import {thumbnailClickHandler} from './picture-modal.js';
 import { showBlockFilters } from './filter-miniature.js';
 import { debounce } from './util.js';
 const template = document.querySelector('#picture').content;
@@ -34,7 +34,7 @@ const renderFilteredThumbnails = (datasets) => {
 
 const addedThumbnails = (datasets) => {
   renderThumbnails(datasets);
-  thumbnailClickHendler(datasets);
+  thumbnailClickHandler(datasets);
   showBlockFilters(debounce(renderFilteredThumbnails), datasets);
 };
 

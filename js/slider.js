@@ -68,7 +68,7 @@ noUiSlider.create(effectSlider, {
 const changesIntensity = (effect, value, unit = '') => `${effect}(${value}${unit})`;
 
 
-function addedEffectHendler(evt) {
+function addedEffectHandler(evt) {
   uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
@@ -99,7 +99,7 @@ function checkHiddenSlider() {
 }
 
 export {
-  addedEffectHendler,
+  addedEffectHandler,
   resetSlider,
   checkHiddenSlider,
 };
