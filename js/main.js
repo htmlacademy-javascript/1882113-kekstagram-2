@@ -6,15 +6,15 @@ import './upload-modal.js';
 import './validate-form.js';
 import './resize-img.js';
 import './slider.js';
-import {renderThumbnails} from './miniature.js';
+import './filter-miniature.js';
+import {addedThumbnails} from './miniature.js';
 import {renderMessageError} from './upload-modal.js';
 import { getData } from './api.js';
 
 getData()
   .then((dataset) => {
-    renderThumbnails(dataset);
+    addedThumbnails(dataset);
   })
   .catch(() => {
     renderMessageError();
   });
-

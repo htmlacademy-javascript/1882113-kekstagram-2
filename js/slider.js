@@ -49,7 +49,7 @@ const SLIDER__SETTING = {
 };
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
-const uploadPreview = document.querySelector('.img-upload__preview');
+const uploadPreview = document.querySelector('.img-upload__preview img');
 const effectLevel = document.querySelector('.img-upload__effect-level');
 
 
@@ -65,11 +65,10 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 
-const changesIntensity = (effect, value, unit = '') =>
-  `${effect}(${value}${unit})`;
+const changesIntensity = (effect, value, unit = '') => `${effect}(${value}${unit})`;
 
 
-function addedEffectHendler(evt) {
+function addedEffectHandler(evt) {
   uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
@@ -78,7 +77,7 @@ function addedEffectHendler(evt) {
     effectSlider.noUiSlider.updateOptions(SLIDER__SETTING[evt.target.value]);
     currentSetting = SLIDER__SETTING[evt.target.value];
     effectSlider.noUiSlider.on('update', () => {
-      effectValue.value = effectSlider.noUiSlider.get();
+      effectValue.value = parseFloat(effectSlider.noUiSlider.get());
       uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
     });
   }
@@ -100,7 +99,7 @@ function checkHiddenSlider() {
 }
 
 export {
-  addedEffectHendler,
+  addedEffectHandler,
   resetSlider,
   checkHiddenSlider,
 };

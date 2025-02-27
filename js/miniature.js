@@ -1,4 +1,6 @@
-import {thumbnailClickHendler} from './picture-modal.js';
+import {thumbnailClickHandler} from './picture-modal.js';
+import { showBlockFilters } from './filter-miniature.js';
+import { debounce } from './util.js';
 const template = document.querySelector('#picture').content;
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
@@ -22,7 +24,18 @@ const renderThumbnails = (datasets) => {
     fragment.appendChild(createThumbnails(dataset));
   });
   pictures.appendChild(fragment);
-  thumbnailClickHendler(datasets);
 };
 
-export {renderThumbnails};
+const renderFilteredThumbnails = (datasets) => {
+  const arrPictures = document.querySelectorAll('.picture');
+  arrPictures.forEach((item) => item.remove());
+  renderThumbnails(datasets);
+};
+
+const addedThumbnails = (datasets) => {
+  renderThumbnails(datasets);
+  thumbnailClickHandler(datasets);
+  showBlockFilters(debounce(renderFilteredThumbnails), datasets);
+};
+
+export {addedThumbnails};
