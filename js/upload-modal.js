@@ -11,12 +11,14 @@ import {
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
+const TIME_HIDDEN_ERROR = 5000;
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const buttonClose = uploadOverlay.querySelector('.img-upload__cancel');
 const uploadPreview = uploadOverlay.querySelector('.img-upload__preview img');
-const uploadEffectPreview = uploadOverlay.querySelectorAll('.effects__preview');
+const uploadEffectsPreview = uploadOverlay.querySelectorAll('.effects__preview');
 const inputHashtags = uploadOverlay.querySelector('.text__hashtags');
 const inputDescription = uploadOverlay.querySelector('.text__description');
 const effectList = document.querySelector('.effects__list');
@@ -89,7 +91,7 @@ const renderMessageError = () => {
   setTimeout(() => {
     const containerError = document.querySelector('.data-error');
     containerError.remove();
-  }, 5000);
+  }, TIME_HIDDEN_ERROR);
 };
 
 const buttonCloseHendler = () => {
@@ -126,7 +128,7 @@ uploadFile.addEventListener('change', () => {
   if(matches) {
     const urlFile = URL.createObjectURL(file);
     uploadPreview.src = urlFile;
-    uploadEffectPreview.forEach((el) => {
+    uploadEffectsPreview.forEach((el) => {
       el.style.backgroundImage = `url(${urlFile})`;
     });
   }

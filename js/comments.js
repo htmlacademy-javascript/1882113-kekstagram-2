@@ -1,3 +1,8 @@
+const COMMENT_SETING = {
+  START_NUMBER: 0,
+  STEP_NUMBER: 5,
+};
+
 const commentTemplate = document.querySelector('#comment').content;
 const modalPicture = document.querySelector('.big-picture');
 const commentsShow = modalPicture.querySelector('.social__comments');
@@ -33,8 +38,8 @@ const cleansСomments = () => {
 
 
 const initComment = () => {
-  let startNumberComments = 0;
-  const stepNumberComments = 5;
+  let startNumberComments = COMMENT_SETING.START_NUMBER;
+  const stepNumberComments = COMMENT_SETING.STEP_NUMBER;
   let arreyComments;
   return (datasets) => {
     if(!arreyComments) {
@@ -44,7 +49,7 @@ const initComment = () => {
     const steckComment = arreyComments.slice(startNumberComments, startNumberComments + stepNumberComments);
     commentsShow.appendChild(renderComments(steckComment));
     numberShowComment.textContent = commentsShow.querySelectorAll('li').length;
-    startNumberComments += 5;
+    startNumberComments += COMMENT_SETING.STEP_NUMBER;
     if(commentsShow.querySelectorAll('li').length === arreyComments.length) {
       loaderMoreComments.classList.add('hidden');
     }
@@ -55,7 +60,7 @@ const initComment = () => {
 const createListComment = (datasets) => {
   renderShowComents = initComment();
   renderShowComents(datasets);
-  if(datasets.length > 5) {
+  if(datasets.length > COMMENT_SETING.STEP_NUMBER) {
     loaderMoreComments.addEventListener('click', renderShowComents);
   }
 };

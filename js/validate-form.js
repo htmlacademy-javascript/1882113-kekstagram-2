@@ -19,6 +19,13 @@ const SUBMIT_BUTTON_TEXT = {
   SENDING: 'Публикую...',
 };
 
+const VALIDATE_SETTING = {
+  MAX_HASHTAGS_QUANTITY: 5,
+  MAX_HASHTAGS_LENGTH: 20,
+  MAX_HASHTAGS_SPACE: 2,
+  MAX_DESCRIPTION_LENGTH: 140,
+};
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadButton = document.querySelector('#upload-submit');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
@@ -33,17 +40,17 @@ const validateHashtags = (input) => {
   const trimedInput = input.trim().toLowerCase();
   const hashtags = trimedInput.split(/\s+/);
   const uniqueHashtags = new Set();
-  if(hashtags.length > 5) {
+  if(hashtags.length > VALIDATE_SETTING.MAX_HASHTAGS_QUANTITY) {
     errorKey = VALIDATE_MESSAGE.MAX_HASHTAGS;
     return false;
   }
   for(const hashtag of hashtags) {
-    if(hashtag.length > 20) {
+    if(hashtag.length > VALIDATE_SETTING.MAX_HASHTAGS_LENGTH) {
       errorKey = VALIDATE_MESSAGE.MAX_LENGTH;
       return false;
     }
 
-    if(hashtag.split('#').length > 2) {
+    if(hashtag.split('#').length > VALIDATE_SETTING.MAX_HASHTAGS_SPACE) {
       errorKey = VALIDATE_MESSAGE.SPACE_MISSING;
       return false;
     }
@@ -64,7 +71,7 @@ const validateHashtags = (input) => {
 
 
 const validateSringLength = (value) => {
-  if(value.length > 140) {
+  if(value.length > VALIDATE_SETTING.MAX_DESCRIPTION_LENGTH) {
     errorKey = VALIDATE_MESSAGE.COMMENT_MAX_LENGTH;
     return false;
   }
