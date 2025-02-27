@@ -51,6 +51,9 @@ const showBlockFilters = (cb, arr) => {
   const copyDatasets = arr.slice();
 
   filterForm.addEventListener('click', (evt) => {
+    if(evt.target.classList.contains('img-filters__button--active')) {
+      return;
+    }
     arrButtonsFilter.forEach((button) => button.classList.remove('img-filters__button--active'));
     evt.target.classList.add('img-filters__button--active');
     cb(FilterConfig[evt.target.id](copyDatasets));
