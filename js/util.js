@@ -13,20 +13,19 @@ const createRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const returnUniqueID = (min, max) => {
+const returnUniqueRandomNumber = (min, max) => {
   const previousValue = [];
 
   return () => {
-    let uniqueId = createRandomNumber(min, max);
+    let uniqueNumber = createRandomNumber(min, max);
     if(previousValue.length >= 10) {
-      // console.error('Перебраны все числа из диапазона');
       return null;
     }
-    while (previousValue.includes(uniqueId)) {
-      uniqueId = createRandomNumber(min, max);
+    while (previousValue.includes(uniqueNumber)) {
+      uniqueNumber = createRandomNumber(min, max);
     }
-    previousValue.push(uniqueId);
-    return uniqueId;
+    previousValue.push(uniqueNumber);
+    return uniqueNumber;
   };
 };
 
@@ -42,6 +41,6 @@ const debounce = (callBack, timeoutDelay = TIME_DELAY) => {
 export {
   createIDGenerator,
   createRandomNumber,
-  returnUniqueID,
+  returnUniqueRandomNumber,
   debounce,
 };

@@ -4,7 +4,6 @@ import { debounce } from './util.js';
 const template = document.querySelector('#picture').content;
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
-const filterForm = document.querySelector('.img-filters__form');
 
 
 const createThumbnails = ({description, id, likes, url, comments}) => {
@@ -27,11 +26,16 @@ const renderThumbnails = (datasets) => {
   pictures.appendChild(fragment);
 };
 
+const renderFilteredThumbnails = (datasets) => {
+  const arrPictures = document.querySelectorAll('.picture');
+  arrPictures.forEach((item) => item.remove());
+  renderThumbnails(datasets);
+};
+
 const addedThumbnails = (datasets) => {
   renderThumbnails(datasets);
   thumbnailClickHendler(datasets);
-  const addFormFilterHendler = showBlockFilters(debounce(renderThumbnails, 500), datasets);
-  filterForm.addEventListener('click', addFormFilterHendler);
+  showBlockFilters(debounce(renderFilteredThumbnails), datasets);
 };
 
-export {addedThumbnails,};
+export {addedThumbnails};

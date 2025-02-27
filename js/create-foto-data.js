@@ -1,7 +1,7 @@
 import {
   createIDGenerator,
   createRandomNumber,
-  returnUniqueID,
+  returnUniqueRandomNumber,
 } from './util.js';
 import {returnDataForObject} from './data.js';
 
@@ -12,7 +12,7 @@ const NUMBER_OF_OBJECTS_GENERATED = 25;
 const createIDPhoto = createIDGenerator();
 const createIDUrl = createIDGenerator();
 
-const createUniqueID = returnUniqueID(1, 1000);
+const createUniqueID = returnUniqueRandomNumber(1, 1000);
 
 const createListComments = (min, max) => {
   const commentsList = [];
