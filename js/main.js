@@ -1,5 +1,4 @@
 import './api.js';
-// import './create-foto-data.js';
 import './miniature.js';
 import './picture-modal.js';
 import './upload-modal.js';
