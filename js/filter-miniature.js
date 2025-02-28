@@ -17,38 +17,38 @@ const blockFilters = document.querySelector('.img-filters');
 const filterForm = blockFilters.querySelector('.img-filters__form');
 const arrButtonsFilter = filterForm.querySelectorAll('button');
 
-function returnDefaultArray (arr) {
-  arr.sort((a, b) => {
+function returnDefaultArray (datasetsArray) {
+  datasetsArray.sort((a, b) => {
     if(a.id < b.id) {
       return -1;
     }
   });
-  return arr;
+  return datasetsArray;
 }
 
-function doesFiltration(arr) {
-  arr.sort((a, b) => {
+function doesFiltration(datasetsArray) {
+  datasetsArray.sort((a, b) => {
     if(a.comments.length > b.comments.length) {
       return -1;
     }
   });
-  return arr;
+  return datasetsArray;
 }
 
 
-function createRandomArray(arr) {
-  const randomArr = [];
+function createRandomArray(datasetsArray) {
+  const randomDatasetsArray = [];
   const randomUniqueNumber = returnUniqueRandomNumber(0, 24);
   for(let i = 0; i < 10; i++) {
-    [randomArr[i]] = [arr[randomUniqueNumber()]];
+    [randomDatasetsArray[i]] = [datasetsArray[randomUniqueNumber()]];
   }
-  return randomArr;
+  return randomDatasetsArray;
 }
 
 
-const showBlockFilters = (cb, arr) => {
+const showBlockFilters = (cb, datasetsArray) => {
   blockFilters.classList.remove('img-filters--inactive');
-  const copyDatasets = arr.slice();
+  const copyDatasets = datasetsArray.slice();
 
   filterForm.addEventListener('click', (evt) => {
     if(evt.target.classList.contains('img-filters__button--active')) {

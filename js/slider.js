@@ -1,3 +1,4 @@
+import {savedPassedResize} from './resize-img.js';
 const SLIDER__SETTING = {
   chrome: {
     effect: 'grayscale',
@@ -68,7 +69,7 @@ noUiSlider.create(effectSlider, {
 const changesIntensity = (effect, value, unit = '') => `${effect}(${value}${unit})`;
 
 
-function addedEffectHandler(evt) {
+function onEffectRadioClick(evt) {
   uploadPreview.removeAttribute('style');
   if(evt.target.value === 'none') {
     effectLevel.classList.add('hidden');
@@ -81,6 +82,7 @@ function addedEffectHandler(evt) {
       uploadPreview.style.filter = changesIntensity(currentSetting.effect, effectValue.value, currentSetting.unit);
     });
   }
+  savedPassedResize();
 }
 
 function resetSlider() {
@@ -99,7 +101,7 @@ function checkHiddenSlider() {
 }
 
 export {
-  addedEffectHandler,
+  onEffectRadioClick,
   resetSlider,
   checkHiddenSlider,
 };

@@ -10,25 +10,25 @@ const closeButtonModal = modalPicture.querySelector('.big-picture__cancel');
 const modalLikes = modalPicture.querySelector('.likes-count');
 const bigPictureCaption = modalPicture.querySelector('.social__caption');
 
-function buttonCloseHandler() {
+function onButtonCloseClick() {
   modalPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  closeButtonModal.removeEventListener('click', buttonCloseHandler);
-  document.removeEventListener('keydown', buttonCloseHandlerKey);
+  closeButtonModal.removeEventListener('click', onButtonCloseClick);
+  document.removeEventListener('keydown', onButtonCloseKeydown);
   cleansСomments();
 }
 
-function buttonCloseHandlerKey(evt) {
+function onButtonCloseKeydown(evt) {
   if(evt.key === 'Escape') {
-    buttonCloseHandler();
+    onButtonCloseClick();
   }
 }
 
 const userOpenModal = () => {
   modalPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  closeButtonModal.addEventListener('click', buttonCloseHandler);
-  document.addEventListener('keydown', buttonCloseHandlerKey);
+  closeButtonModal.addEventListener('click', onButtonCloseClick);
+  document.addEventListener('keydown', onButtonCloseKeydown);
 };
 
 

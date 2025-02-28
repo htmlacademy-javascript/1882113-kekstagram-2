@@ -2,7 +2,7 @@ import { sendData } from './api';
 import{
   renderFailedModal,
   renderSuccessModal,
-  buttonCloseHandler,
+  onButtonCloseUploadModal,
 } from './upload-modal';
 
 const VALIDATE_MESSAGE = {
@@ -26,11 +26,12 @@ const VALIDATE_SETTING = {
   MAX_DESCRIPTION_LENGTH: 140,
 };
 
+const PATTERN_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadButton = document.querySelector('#upload-submit');
 const inputHashtags = uploadForm.querySelector('.text__hashtags');
 const inputDescription = uploadForm.querySelector('.text__description');
-const patternHashtags = /^#[a-zа-яё0-9]{1,19}$/i;
 let errorKey = null;
 
 
@@ -55,7 +56,7 @@ const validateHashtags = (input) => {
       return false;
     }
 
-    if(!patternHashtags.test(hashtag) && hashtag !== '') {
+    if(!PATTERN_HASHTAGS.test(hashtag) && hashtag !== '') {
       errorKey = VALIDATE_MESSAGE.ERROR_FORMAT;
       return false;
     }
@@ -98,7 +99,7 @@ const unblockSubmitButton = () => {
   uploadButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
 };
 
-const userFormSubmitHandler = (evt) => {
+const onButtonFormSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if(isValid) {
@@ -106,7 +107,7 @@ const userFormSubmitHandler = (evt) => {
     sendData(new FormData (evt.target))
       .then(() => {
         renderSuccessModal();
-        buttonCloseHandler();
+        onButtonCloseUploadModal();
       })
       .catch(() => {
         renderFailedModal();
@@ -121,6 +122,6 @@ function resetPrestine () {
 }
 
 export{
-  userFormSubmitHandler,
+  onButtonFormSubmit,
   resetPrestine,
 };
