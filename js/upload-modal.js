@@ -1,12 +1,15 @@
-import {resizeHandler} from './resize-img.js';
 import {
-  addedEffectHandler,
+  onResizeButtonClick,
+  removeResizeData,
+} from './resize-img.js';
+import {
+  onEffectRadioClick,
   resetSlider,
   checkHiddenSlider,
 } from './slider.js';
 import {
   resetPrestine,
-  userFormSubmitHandler,
+  onButtonFormSubmit,
 } from './validate-form.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -28,14 +31,14 @@ const sendTemplateError = document.querySelector('#error').content;
 const templateError = document.querySelector('#data-error').content;
 let isInfoModalOpen = false;
 
-const setInfoModelHandler = (modal, button) => {
-  const closeInfoModalHandler = () => {
+const setInfoModelHandler = (modal, buttonSuccess) => {
+  const onButtonSuccessClick = () => {
     modal.remove();
     isInfoModalOpen = false;
     cleanInfoModalHandler();
   };
 
-  const closeInfoModalKeyHandler = (evt) => {
+  const onDocumentKeydownCloseModalInfo = (evt) => {
     if(evt.key === 'Escape' && isInfoModalOpen) {
       modal.remove();
       isInfoModalOpen = false;
@@ -44,16 +47,16 @@ const setInfoModelHandler = (modal, button) => {
   };
 
   function cleanInfoModalHandler() {
-    button.removeEventListener('click', closeInfoModalHandler);
-    document.removeEventListener('keydown', closeInfoModalKeyHandler);
-    document.removeEventListener('click', closeInfoModalHandler);
-    modal.children[0].removeEventListener('click', stopsSpread);
+    buttonSuccess.removeEventListener('click', onButtonSuccessClick);
+    document.removeEventListener('keydown', onDocumentKeydownCloseModalInfo);
+    document.removeEventListener('click', onButtonSuccessClick);
+    modal.children[0].removeEventListener('click', onEventStopPropagation);
   }
 
-  button.addEventListener('click', closeInfoModalHandler);
-  document.addEventListener('keydown', closeInfoModalKeyHandler);
-  document.addEventListener('click', closeInfoModalHandler);
-  modal.children[0].addEventListener('click', stopsSpread);
+  buttonSuccess.addEventListener('click', onButtonSuccessClick);
+  document.addEventListener('keydown', onDocumentKeydownCloseModalInfo);
+  document.addEventListener('click', onButtonSuccessClick);
+  modal.children[0].addEventListener('click', onEventStopPropagation);
 };
 
 const addTemplateHandler = (modalClassName) => {
@@ -94,29 +97,30 @@ const renderMessageError = () => {
   }, TIME_HIDDEN_ERROR);
 };
 
-const buttonCloseHandler = () => {
+const onButtonCloseUploadModal = () => {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadForm.reset();
   uploadFile.value = '';
   resetPrestine();
   resetSlider();
-  uploadForm.removeEventListener('submit', userFormSubmitHandler);
-  inputHashtags.removeEventListener('keydown', stopsSpread);
-  inputDescription.removeEventListener('keydown', stopsSpread);
-  document.removeEventListener('keydown', keyCloseHandler);
-  scale.removeEventListener('click', resizeHandler);
-  effectList.removeEventListener('change', addedEffectHandler);
-  buttonClose.removeEventListener('click', buttonCloseHandler);
+  removeResizeData();
+  uploadForm.removeEventListener('submit', onButtonFormSubmit);
+  inputHashtags.removeEventListener('keydown', onEventStopPropagation);
+  inputDescription.removeEventListener('keydown', onEventStopPropagation);
+  document.removeEventListener('keydown', onDocumentClosePictureModal);
+  scale.removeEventListener('click', onResizeButtonClick);
+  effectList.removeEventListener('change', onEffectRadioClick);
+  buttonClose.removeEventListener('click', onButtonCloseUploadModal);
 };
 
-function keyCloseHandler(evt) {
+function onDocumentClosePictureModal(evt) {
   if(evt.key === 'Escape' && !isInfoModalOpen) {
-    buttonCloseHandler();
+    onButtonCloseUploadModal();
   }
 }
 
-function stopsSpread(evt) {
+function onEventStopPropagation(evt) {
   evt.stopPropagation();
 }
 
@@ -135,18 +139,18 @@ uploadFile.addEventListener('change', () => {
   checkHiddenSlider();
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  uploadForm.addEventListener('submit', userFormSubmitHandler);
-  buttonClose.addEventListener('click', buttonCloseHandler);
-  document.addEventListener('keydown', keyCloseHandler);
-  inputHashtags.addEventListener('keydown', stopsSpread);
-  inputDescription.addEventListener('keydown', stopsSpread);
-  scale.addEventListener('click', resizeHandler);
-  effectList.addEventListener('change', addedEffectHandler);
+  uploadForm.addEventListener('submit', onButtonFormSubmit);
+  buttonClose.addEventListener('click', onButtonCloseUploadModal);
+  document.addEventListener('keydown', onDocumentClosePictureModal);
+  inputHashtags.addEventListener('keydown', onEventStopPropagation);
+  inputDescription.addEventListener('keydown', onEventStopPropagation);
+  scale.addEventListener('click', onResizeButtonClick);
+  effectList.addEventListener('change', onEffectRadioClick);
 });
 
 export{
   renderSuccessModal,
   renderFailedModal,
   renderMessageError,
-  buttonCloseHandler,
+  onButtonCloseUploadModal,
 };
